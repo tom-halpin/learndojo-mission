@@ -1,0 +1,117 @@
+<?php
+
+/**
+* Implements hook_menu()
+*/
+function mission_array() {
+  return array(
+    '/ka/admin/mission' => array(
+      'title' => 'Mission submissions',
+      'route_name' => 'mission_list',
+    ),
+    '/ka/admin/mission/add' => array(
+      'title' => 'Mission',
+      'route_name' => 'mission_add',
+    ),
+    '/ka/admin/mission/delete/%' => array(
+      'title' => 'Delete Mission submission',
+      'route_name' => 'mission_delete',
+    ),
+    '/ka/admin/strand' => array(
+      'title' => 'Strand submissions',
+      'route_name' => 'strand_list',
+    ),
+    '/ka/admin/strand/add' => array(
+      'title' => 'Strand',
+      'route_name' => 'strand_add',
+    ),
+    '/ka/admin/strand/delete/%' => array(
+      'title' => 'Delete Strand submission',
+      'route_name' => 'strand_delete',
+    ),
+    '/ka/admin/unit' => array(
+      'title' => 'Unit submissions',
+      'route_name' => 'unit_list',
+    ),
+    '/ka/admin/unit/add' => array(
+      'title' => 'Unit',
+      'route_name' => 'unit_add',
+    ),
+    '/ka/admin/unit/delete/%' => array(
+      'title' => 'Delete Unit submission',
+      'route_name' => 'unit_delete',
+    ),	
+    '/ka/admin/import' => array(
+      'title' => 'Import',
+      'route_name' => 'import',
+    ),    
+	'/ka/admin/topic' => array(
+      'title' => 'Topic submissions',
+      'route_name' => 'topic_list',
+    ),
+    '/ka/admin/topic/add' => array(
+      'title' => 'Topic',
+      'route_name' => 'topic_add',
+    ),
+    '/ka/admin/topic/delete/%' => array(
+      'title' => 'Delete Topic submission',
+      'route_name' => 'topic_delete',
+    ),
+    '/ka/admin/term' => array(
+      'title' => 'Term submissions',
+      'route_name' => 'term_list',
+    ),
+    '/ka/admin/term/add' => array(
+      'title' => 'Term',
+      'route_name' => 'term_add',
+    ),
+    '/ka/admin/term/delete/%' => array(
+      'title' => 'Delete Term submission',
+      'route_name' => 'term_delete',
+    ),    
+	'/ka/admin/topictype' => array(
+      'title' => 'Topic Type submissions',
+      'route_name' => 'topictype_list',
+    ),
+    '/ka/admin/topictype/add' => array(
+      'title' => 'Topic Type',
+      'route_name' => 'topictype_add',
+    ),
+    '/ka/admin/topictype/delete/%' => array(
+      'title' => 'Delete Topic Type submission',
+      'route_name' => 'topictype_delete',
+    ),
+	'/ka/admin/supportedsite' => array(
+      'title' => 'Supported Site submissions',
+      'route_name' => 'supportedsite_list',
+    ),
+    '/ka/admin/supportedsite/add' => array(
+      'title' => 'Supported Site',
+      'route_name' => 'supportedsite_add',
+    ),
+    '/ka/admin/supportedsite/delete/%' => array(
+      'title' => 'Delete Supported Site submission',
+      'route_name' => 'supportedsite_delete',
+    ),
+    '/ka/admin/country' => array(
+      'title' => 'SCountry submissions',
+      'route_name' => 'country_list',
+    ),
+    '/ka/admin/country/add' => array(
+      'title' => 'Country',
+      'route_name' => 'country_add',
+    ),
+    '/ka/admin/country/delete/%' => array(
+      'title' => 'Delete Country submission',
+      'route_name' => 'country_delete',
+    ),    
+    '/ka/student/studentstrand' => array(
+      'title' => 'Student Strand',
+      'route_name' => 'student_strand',
+    ),
+    '/ka/student/studenttopic' => array(
+      'title' => 'Student Topic',
+      'route_name' => 'student_topic',
+    ),    
+  );
+}

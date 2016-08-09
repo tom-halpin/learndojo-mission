@@ -1,0 +1,33 @@
+mission_list:
+  title: Mission
+  route_name: mission_list
+  base_route: system.admin_content
+strand_list:
+  title: Strand
+  route_name: strand_list
+  base_route: system.admin_content
+unit_list:
+  title: Unit
+  route_name: unit_list
+  base_route: system.admin_content
+topic_list:
+  title: Topic
+  route_name: topic_list
+  base_route: system.admin_content
+term_list:
+  title: Term
+  route_name: term_list
+  base_route: system.admin_content    
+topictype_list:
+  title: Topic Type
+  route_name: topictype_list
+  base_route: system.admin_content  
+supportedsite_list:
+  title: Supported Sites
+  route_name: supportedsite_list
+  base_route: system.admin_content
+student_strand:
+  title: Student Strand
+  route_name: student_strand
+  base_route: system.admin_content  
+  

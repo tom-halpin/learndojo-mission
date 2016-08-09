@@ -1,0 +1,5 @@
+name: Mission
+description: 'Mission Mapping Module - set of admin Forms to create and maintain missions mapped to Online Educational Content'
+type: module
+core: 8.x
+package: KA Mission Mapping

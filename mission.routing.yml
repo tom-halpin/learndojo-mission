@@ -1,0 +1,329 @@
+# mission admin routings
+mission_list:
+  path: '/ka/admin/mission'
+  defaults:
+    _form: '\Drupal\mission\MissionAdminForm'
+    _title: 'Mission Admin'
+  requirements:
+    _permission: 'content editor mission forms'    
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+    
+mission_add:
+  path: '/ka/admin/mission/add'
+  defaults:
+    _form: '\Drupal\mission\MissionAddForm'
+    _title: 'Create Mission'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+mission_edit:
+  path: '/ka/admin/mission/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\MissionAddForm'
+    _title: 'Edit Mission'
+  requirements:
+    _permission: 'content editor mission forms'    
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+mission_delete:
+  path: '/ka/admin/mission/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\MissionDeleteForm'
+    _title: 'Delete Mission'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+#strand routings
+strand_list:
+  path: '/ka/admin/strand'
+  defaults:
+    _form: '\Drupal\mission\StrandAdminForm'
+    _title: 'Strand Admin'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+strand_add:
+  path: '/ka/admin/strand/add'
+  defaults:
+    _form: '\Drupal\mission\StrandAddForm'
+    _title: 'Create Strand'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+strand_edit:
+  path: '/ka/admin/strand/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\StrandAddForm'
+    _title: 'Edit Strand'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+strand_delete:
+  path: '/ka/admin/strand/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\StrandDeleteForm'
+    _title: 'Delete Strand'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+#unit routings
+unit_list:
+  path: '/ka/admin/unit'
+  defaults:
+    _form: '\Drupal\mission\UnitAdminForm'
+    _title: 'Unit Admin'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+unit_add:
+  path: '/ka/admin/unit/add'
+  defaults:
+    _form: '\Drupal\mission\UnitAddForm'
+    _title: 'Create Unit'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+unit_edit:
+  path: '/ka/admin/unit/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\UnitAddForm'
+    _title: 'Edit Unit'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+unit_delete:
+  path: '/ka/admin/unit/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\UnitDeleteForm'
+    _title: 'Delete Unit'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+#topic routings
+topic_list:
+  path: '/ka/admin/topic'
+  defaults:
+    _form: '\Drupal\mission\TopicAdminForm'
+    _title: 'Topic Admin'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+topic_add:
+  path: '/ka/admin/topic/add'
+  defaults:
+    _form: '\Drupal\mission\TopicAddForm'
+    _title: 'Create Topic'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+topic_edit:
+  path: '/ka/admin/topic/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\TopicAddForm'
+    _title: 'Edit Topic'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+topic_delete:
+  path: '/ka/admin/topic/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\TopicDeleteForm'
+    _title: 'Delete Topic'
+  requirements:
+    _permission: 'content editor mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+import:
+  path: '/ka/admin/import'
+  defaults:
+    _form: '\Drupal\mission\ImportForm'
+    _title: 'Import'
+  requirements:
+    _permission: 'content editor mission forms'    
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+#country routings
+country_list:
+  path: '/ka/admin/country'
+  defaults:
+    _form: '\Drupal\mission\CountryAdminForm'
+    _title: 'Country Admin'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+country_add:
+  path: '/ka/admin/country/add'
+  defaults:
+    _form: '\Drupal\mission\CountryAddForm'
+    _title: 'Create Country'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+country_edit:
+  path: '/ka/admin/country/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\CountryAddForm'
+    _title: 'Edit Country'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+country_delete:
+  path: '/ka/admin/country/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\CountryDeleteForm'
+    _title: 'Delete Country'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+#term routings
+term_list:
+  path: '/ka/admin/term'
+  defaults:
+    _form: '\Drupal\mission\TermAdminForm'
+    _title: 'Term Admin'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+term_add:
+  path: '/ka/admin/term/add'
+  defaults:
+    _form: '\Drupal\mission\TermAddForm'
+    _title: 'Create Term'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+term_edit:
+  path: '/ka/admin/term/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\TermAddForm'
+    _title: 'Edit Term'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+term_delete:
+  path: '/ka/admin/term/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\TermDeleteForm'
+    _title: 'Delete Term'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+
+#topic type routings
+topictype_list:
+  path: '/ka/admin/topictype'
+  defaults:
+    _form: '\Drupal\mission\TopicTypeAdminForm'
+    _title: 'Topic Type Admin'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+topictype_add:
+  path: '/ka/admin/topictype/add'
+  defaults:
+    _form: '\Drupal\mission\TopicTypeAddForm'
+    _title: 'Create Topic Type'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+topictype_edit:
+  path: '/ka/admin/topictype/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\TopicTypeAddForm'
+    _title: 'Edit Topic Type'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+topictype_delete:
+  path: '/ka/admin/topictype/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\TopicTypeDeleteForm'
+    _title: 'Delete Topic Type'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+#supported site routings
+supportedsite_list:
+  path: '/ka/admin/supportedsite'
+  defaults:
+    _form: '\Drupal\mission\SupportedSiteAdminForm'
+    _title: 'Supported Site Admin'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+supportedsite_add:
+  path: '/ka/admin/supportedsite/add'
+  defaults:
+    _form: '\Drupal\mission\SupportedSiteAddForm'
+    _title: 'Create Supported Site'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+supportedsite_edit:
+  path: '/ka/admin/supportedsite/edit/{id}'
+  defaults:
+    _form: '\Drupal\mission\SupportedSiteAddForm'
+    _title: 'Edit Supported Site'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+
+supportedsite_delete:
+  path: '/ka/admin/supportedsite/delete/{id}'
+  defaults:
+    _form: 'Drupal\mission\SupportedSiteDeleteForm'
+    _title: 'Delete Supported Site'
+  requirements:
+    _permission: 'content admin mission forms'
+#    _role: 'Administrator+ContentAdmin'
+    
+#student routings
+student_strand:
+  path: '/ka/student/studentstrand'
+  defaults:
+    _form: '\Drupal\mission\StudentStrandForm'
+    _title: 'Student Strand'
+  requirements:
+    _permission: 'student mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+student_topic:
+  path: '/ka/student/studenttopic'
+  defaults:
+    _form: '\Drupal\mission\StudentTopicForm'
+    _title: 'Student Topic'
+  requirements:
+    _permission: 'student mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+    
+    
+# note on _role: Specify one or more role IDs which should have access to the page. 
+# If you join them with "+", the user needs to have just one of the roles. 
+# If you join them with "," the user needs to have all of the specified roles.

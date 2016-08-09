@@ -1,0 +1,13 @@
+#testmodule.permissions.yml
+content admin mission forms:
+    title: 'content admin manage mission forms'
+    description: 'Manage mission forms permission.'
+    
+content editor mission forms:
+    title: 'content editor manage mission forms'
+    description: 'Manage mission forms permission.'
+
+student mission forms:
+    title: 'student mission forms'
+    description: 'View student forms permission.'  
+#https://www.sitepoint.com/creating-custom-menus-in-drupal/

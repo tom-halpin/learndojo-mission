@@ -1,0 +1,224 @@
+<?php
+function mission_install() {
+ 
+	// Create database tables
+	
+    if (db_table_exists('kacountry') == 0)
+    {
+        db_query("
+            CREATE TABLE kacountry(
+              id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+              name VARCHAR(128) NOT NULL,
+              description VARCHAR(255) NOT NULL,
+              last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+              PRIMARY KEY(id),
+              UNIQUE KEY(name)
+            ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+        ");
+    }
+    	
+	if (db_table_exists('kamission') == 0)
+	{
+		db_query("
+			CREATE TABLE kamission(
+			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			  country_id INT UNSIGNED NOT NULL,
+			  name VARCHAR(128) NOT NULL,
+			  description VARCHAR(255) NOT NULL,
+			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY(id),
+			  UNIQUE KEY(country_id, name),
+			  CONSTRAINT fk_mission_country FOREIGN KEY(country_id) REFERENCES kacountry(id) ON DELETE RESTRICT ON UPDATE CASCADE
+			) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+		");
+	}
+	
+	if (db_table_exists('kastrand') == 0)
+	{
+		db_query("
+			CREATE TABLE kastrand(
+			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			  mission_id INT UNSIGNED NOT NULL,
+			  name VARCHAR(128) NOT NULL,
+			  description VARCHAR(255) NOT NULL,
+			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY(id),
+			  UNIQUE KEY(mission_id, name),
+			  CONSTRAINT fk_strand_mission FOREIGN KEY(mission_id) REFERENCES kamission(id) ON DELETE RESTRICT ON UPDATE CASCADE
+			) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+		");
+	}
+	
+	if (db_table_exists('kaunit') == 0)
+	{
+		db_query("
+			CREATE TABLE kaunit(
+			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			  strand_id INT UNSIGNED NOT NULL,
+			  name VARCHAR(128) NOT NULL,
+			  description VARCHAR(255) NOT NULL,
+			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY(id),
+			  UNIQUE KEY(strand_id, name),
+			  CONSTRAINT fk_unit_strand FOREIGN KEY(strand_id) REFERENCES kastrand(id) ON DELETE RESTRICT ON UPDATE CASCADE
+			) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+		");
+	}
+	
+	if (db_table_exists('katopictype') == 0)
+	{
+		db_query("
+			CREATE TABLE katopictype(
+			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			  name VARCHAR(128) NOT NULL,
+			  description VARCHAR(255) NOT NULL,
+			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY(id),
+			  UNIQUE KEY(name)
+			) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+		");
+	}
+	
+	if (db_table_exists('katerm') == 0)
+    {
+        db_query("
+            CREATE TABLE katerm(
+              id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+              name VARCHAR(128) NOT NULL,
+              description VARCHAR(255) NOT NULL,
+              last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+              PRIMARY KEY(id),
+              UNIQUE KEY(name)
+            ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+        ");
+    }
+    
+	if (db_table_exists('katopic') == 0)
+	{
+		db_query("
+			CREATE TABLE katopic(
+			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			  unit_id INT UNSIGNED NOT NULL,
+			  name VARCHAR(128) NOT NULL,
+			  description VARCHAR(255) NOT NULL,
+			  corecontent BOOLEAN not null,
+			  learning_outcome VARCHAR(1024) NOT NULL,
+			  ka_topic VARCHAR(255) NOT NULL,
+			  ka_url VARCHAR(255) NOT NULL,
+			  difficultyindex INT NOT NULL,
+			  term_id INT UNSIGNED NOT NULL,
+			  weeknumber INT NOT NULL,
+			  topictype_id INT UNSIGNED NOT NULL,
+			  notes VARCHAR(512) NOT NULL,
+			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY(id),
+			  UNIQUE KEY(unit_id, name),
+			  CONSTRAINT fk_topic_unit FOREIGN KEY(unit_id) REFERENCES kaunit(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+			  CONSTRAINT fk_topic_topictype FOREIGN KEY(topictype_id) REFERENCES katopictype(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+			  CONSTRAINT fk_topic_term FOREIGN KEY(term_id) REFERENCES katerm(id) ON DELETE RESTRICT ON UPDATE CASCADE
+			) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+		");
+	}
+	
+	if (db_table_exists('kasupportedsite') == 0)
+	{
+		db_query("
+			CREATE TABLE kasupportedsite(
+			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			  name VARCHAR(128) NOT NULL,
+			  domain VARCHAR(256) NOT NULL,
+			  description VARCHAR(255) NOT NULL,
+			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY(id),
+			  UNIQUE KEY(name)
+			) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+		");
+	}
+
+	// uncomment for InterServer
+	db_query("INSERT INTO kacountry(name, description) VALUES ('Ireland','Ireland Description')");
+    db_query("INSERT INTO kamission(country_id, name, description) VALUES (1, '4th Class Maths','4th Class Maths Description')");
+    db_query("INSERT INTO kastrand(mission_id, name, description) VALUES (1, 'Number patterns and sequences','4th Class Number patterns and sequences Strand description')");
+    db_query("INSERT INTO kaunit(strand_id, name, description) VALUES (1, 'Algebra','4th Class Algebra Unit description')");
+    
+    db_query("INSERT INTO katopictype(name, description) VALUES ('Exercise','Exercise Description')");
+    db_query("INSERT INTO katopictype(name, description) VALUES ('Video','Video Description')");
+    
+    db_query("INSERT INTO katerm(name, description) VALUES ('Academic Year','Academic Year Description')");
+    db_query("INSERT INTO katerm(name, description) VALUES ('Calendar Year','Calendar Year Description')");
+    
+    db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('Khan Academy','khanacademy.org', 'Khan Academy Supported Site Description')");
+    db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('PDST','pdst.ie', 'PDST Supported Site Description')");
+	
+    	
+	// uncomment for local
+	/*
+	db_query("INSERT INTO kacountry(name, description) VALUES ('Ireland','Ireland Description')");
+	db_query("INSERT INTO kacountry(name, description) VALUES ('Costa Rica','Costa Rica Description')");
+	db_query("INSERT INTO kacountry(name, description) VALUES ('China','China Description')");
+	db_query("INSERT INTO kacountry(name, description) VALUES ('America','America Description')");
+	db_query("INSERT INTO kacountry(name, description) VALUES ('Holland','Holland Description')");
+	
+	db_query("INSERT INTO kamission(country_id, name, description) VALUES (1, '3rd Class Maths','3rd Class Maths Description')");
+	db_query("INSERT INTO kamission(country_id, name, description) VALUES (1, '4th Class Maths','4th Class Maths Description')");
+	db_query("INSERT INTO kamission(country_id, name, description) VALUES (2, '5th Class Maths','5th Class Maths Description')");
+
+    db_query("INSERT INTO kastrand(mission_id, name, description) VALUES (1, '3 Number patterns and sequences','3 Number patterns and sequences description')");
+    db_query("INSERT INTO kastrand(mission_id, name, description) VALUES (2, '4 Number patterns and sequences','4 Number patterns and sequences description')");
+    db_query("INSERT INTO kastrand(mission_id, name, description) VALUES (3, '5 Number patterns and sequences','5 Number patterns and sequences description')");
+    
+    db_query("INSERT INTO kaunit(strand_id, name, description) VALUES (1, '3 Algebra','3 algebra description')");
+    db_query("INSERT INTO kaunit(strand_id, name, description) VALUES (2, '4 Algebra','4 algebra description')");
+    db_query("INSERT INTO kaunit(strand_id, name, description) VALUES (3, '5 Algebra','5 algebra description')");
+    
+    db_query("INSERT INTO katopictype(name, description) VALUES ('Exercise','Exercise Description')");
+    db_query("INSERT INTO katopictype(name, description) VALUES ('Video','Video Description')");
+    
+    db_query("INSERT INTO katerm(name, description) VALUES ('Academic Year','Academic Year Description')");
+    db_query("INSERT INTO katerm(name, description) VALUES ('Calendar Year','Calendar Year Description')");
+    
+    db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('Khan Academy','khanacademy.org', 'Khan Academy Supported Site Description')");
+    db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('PDST','pdst.ie', 'PDST Supported Site Description')");
+    
+    db_query("INSERT INTO katopic(unit_id, name, description, corecontent, learning_outcome, ka_topic, ka_url, difficultyindex, term_id, weeknumber, topictype_id, notes) 
+             VALUES(1, 'Skip Counting by 5', 'Skip Counting by 5 Description', true, 'Skip Counting by 5 Learning Outcome', 'Skip Counting by 5', 
+             'https://www.khanacademy.org/math/early-math/cc-early-math-place-value-topic/cc-early-math-skip-counting/e/skip-counting-by-5s', 
+             1, 1, 1, 1 ,'Skip Counting by 5 notes')"); 
+    
+     db_query("INSERT INTO katopic(unit_id, name, description, corecontent, learning_outcome, ka_topic, ka_url, difficultyindex, term_id, weeknumber, topictype_id, notes) 
+             VALUES(1, 'Skip Counting by 10', 'Skip Counting by 10 Description', true, 'Skip Counting by 10 Learning Outcome', 'Skip Counting by 10', 
+             'https://www.khanacademy.org/math/early-math/cc-early-math-place-value-topic/cc-early-math-skip-counting/e/skip-counting-by-5s', 
+             1, 1, 1, 1 ,'Skip Counting by 10 notes')");
+     */
+           		
+}
+
+function mission_uninstall() {
+	// Drop tables
+	if (db_table_exists('kasupportedsite')) {
+		db_query("DROP TABLE {kasupportedsite}");
+	}	
+    if (db_table_exists('katopic')) {
+        db_query("DROP TABLE {katopic}");
+    }
+    if (db_table_exists('katopictype')) {
+        db_query("DROP TABLE {katopictype}");
+    }
+    if (db_table_exists('katerm')) {
+        db_query("DROP TABLE {katerm}");
+    }   
+       
+	if (db_table_exists('kaunit')) {
+		db_query("DROP TABLE {kaunit}");
+	}
+	if (db_table_exists('kastrand')) {
+		db_query("DROP TABLE {kastrand}");
+	}
+	if (db_table_exists('kamission')) {
+		db_query("DROP TABLE {kamission}");
+	}
+	   if (db_table_exists('kacountry')) {
+        db_query("DROP TABLE {kacountry}");
+    }
+}
+
