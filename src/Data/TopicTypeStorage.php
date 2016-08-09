@@ -60,3 +60,4 @@ class TopicTypeStorage {
     db_delete('katopictype')->condition('id', $id)->execute();
   }
 }
+?>
