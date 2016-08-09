@@ -14,4 +14,4 @@
       return t('To access this application Javascript is required.');
     }
   }
-  ?>
+?>

@@ -1,0 +1,22 @@
+diff --git a/src/Data/TopicTypeStorage.php b/src/Data/TopicTypeStorage.php
+index 3873b79..2bb3938 100644
+--- a/src/Data/TopicTypeStorage.php
++++ b/src/Data/TopicTypeStorage.php
+@@ -60,3 +60,4 @@ class TopicTypeStorage {
+     db_delete('katopictype')->condition('id', $id)->execute();
+   }
+ }
++?>
+\ No newline at end of file
+diff --git a/src/modal.inc b/src/modal.inc
+index eb66548..19275cd 100644
+--- a/src/modal.inc
++++ b/src/modal.inc
+@@ -14,4 +14,4 @@
+       return t('To access this application Javascript is required.');
+     }
+   }
+-  ?>
+\ No newline at end of file
++?>
+\ No newline at end of file
