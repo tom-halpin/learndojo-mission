@@ -91,8 +91,10 @@ class TopicStorage {
         $select -> fields('katr', array('id', 'name')) ;
         $select->addField('katr', 'id', 'termid'); 
         $select->addField('katr', 'name', 'termname');  
-        $select->condition('kau.id', $unitid);
         $select->condition('kat.corecontent', $corecontent);
+        if (isset($unitid)) {
+          $select->condition('kau.id', $unitid);
+        }
         # execute the query
         $results = $select -> execute();
         return $results;
@@ -100,17 +102,17 @@ class TopicStorage {
   
   static function getAll() {
     $result = db_query('SELECT a.id as missionid, a.name as missionname, 
-				b.id as strandid, b.name as strandname, 
-				c.id as unitid, c.name as unitname, 
-				d.id, d.name, d.description, d.corecontent, d.learning_outcome, d.ka_topic, d.ka_url, d.difficultyindex, d.term_id, d.weeknumber,
-				d.topictype_id as topictypeid, e.name as topictypename, d.notes
-				FROM kamission a, kastrand b, kaunit c, katopic d, katopictype e, katerm f
-				where 
-				a.id = b.mission_id AND 
-				b.id = c.strand_id AND
-				c.id = d.unit_id AND
-				e.id = d.topictype_id AND
-				f.id = d.term_id')->fetchAllAssoc('id');
+                b.id as strandid, b.name as strandname, 
+                c.id as unitid, c.name as unitname, 
+                d.id, d.name, d.description, d.corecontent, d.learning_outcome, d.ka_topic, d.ka_url, d.difficultyindex, d.term_id, d.weeknumber,
+                d.topictype_id as topictypeid, e.name as topictypename, d.notes
+                FROM kamission a, kastrand b, kaunit c, katopic d, katopictype e, katerm f
+                where 
+                a.id = b.mission_id AND 
+                b.id = c.strand_id AND
+                c.id = d.unit_id AND
+                e.id = d.topictype_id AND
+                f.id = d.term_id')->fetchAllAssoc('id');
     return $result;
   }
   
@@ -121,19 +123,19 @@ class TopicStorage {
   static function get($id) {
     $result = db_query('SELECT h.id as countryid, h.name as countryname, 
                 a.id as missionid, a.name as missionname, 
-				b.id as strandid, b.name as strandname, 
-				c.id as unitid, c.name as unitname, 
-				d.id, d.name, d.description, d.corecontent, d.learning_outcome, d.ka_topic, d.ka_url, d.difficultyindex, d.term_id, d.weeknumber, 
-				d.topictype_id as topictypeid, e.name as topictypename, d.notes
-				FROM kamission a, kastrand b, kaunit c, katopic d, katopictype e, katerm f, kacountry h
-				where 
-				h.id = a.country_id AND
-				a.id = b.mission_id AND 
-				b.id = c.strand_id AND
-				c.id = d.unit_id AND
-				e.id = d.topictype_id AND
+                b.id as strandid, b.name as strandname, 
+                c.id as unitid, c.name as unitname, 
+                d.id, d.name, d.description, d.corecontent, d.learning_outcome, d.ka_topic, d.ka_url, d.difficultyindex, d.term_id, d.weeknumber, 
+                d.topictype_id as topictypeid, e.name as topictypename, d.notes
+                FROM kamission a, kastrand b, kaunit c, katopic d, katopictype e, katerm f, kacountry h
+                where 
+                h.id = a.country_id AND
+                a.id = b.mission_id AND 
+                b.id = c.strand_id AND
+                c.id = d.unit_id AND
+                e.id = d.topictype_id AND
                 f.id = d.term_id AND
-				d.id = :id', array(':id' => $id))->fetchAllAssoc('id');
+                d.id = :id', array(':id' => $id))->fetchAllAssoc('id');
     if ($result) {
       return $result[$id];
     }
@@ -144,35 +146,35 @@ class TopicStorage {
 
   static function add($unit_id, $name, $description, $corecontent, $learning_outcome, $ka_topic, $ka_url, $difficultyindex, $term_id, $weeknumber, $topictype_id, $notes) {
     db_insert('katopic')->fields(array(
-	   'unit_id' => $unit_id,
+       'unit_id' => $unit_id,
       'name' => $name,
       'description' => $description,
       'corecontent' => $corecontent,
-	  'learning_outcome' => $learning_outcome,
-	  'ka_topic' => $ka_topic,
-	  'ka_url' => $ka_url,
-	  'difficultyindex' => $difficultyindex,
-	  'term_id' => $term_id,
-	  'weeknumber' => $weeknumber, 
-	  'topictype_id' => $topictype_id,
-	  'notes' => $notes,
+      'learning_outcome' => $learning_outcome,
+      'ka_topic' => $ka_topic,
+      'ka_url' => $ka_url,
+      'difficultyindex' => $difficultyindex,
+      'term_id' => $term_id,
+      'weeknumber' => $weeknumber, 
+      'topictype_id' => $topictype_id,
+      'notes' => $notes,
     ))->execute();
   }
 
   static function edit($id, $unit_id, $name, $description, $corecontent, $learning_outcome, $ka_topic, $ka_url, $difficultyindex, $term_id, $weeknumber, $topictype_id, $notes) {
     db_update('katopic')->fields(array(
-	  'unit_id' => $unit_id,
+      'unit_id' => $unit_id,
       'name' => $name,
       'description' => $description,
       'corecontent' => $corecontent,
-	  'learning_outcome' => $learning_outcome,
-	  'ka_topic' => $ka_topic,
-	  'ka_url' => $ka_url,
-	  'difficultyindex' => $difficultyindex,
-	  'term_id' => $term_id,
-      'weeknumber' => $weeknumber,	  
-	  'topictype_id' => $topictype_id,
-	  'notes' => $notes,
+      'learning_outcome' => $learning_outcome,
+      'ka_topic' => $ka_topic,
+      'ka_url' => $ka_url,
+      'difficultyindex' => $difficultyindex,
+      'term_id' => $term_id,
+      'weeknumber' => $weeknumber,    
+      'topictype_id' => $topictype_id,
+      'notes' => $notes,
     ))
     ->condition('id', $id)
     ->execute();
