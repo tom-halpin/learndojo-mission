@@ -40,6 +40,11 @@ class CountryStorage {
     }
   }
 
+  static function getIDByName($name) {
+    $id = db_query('SELECT id FROM {kacountry} WHERE name = :name', array(':name' => $name))->fetchField();
+    return $id;
+  }
+  
   static function add($name, $description) {
     db_insert('kacountry')->fields(array(
       'name' => $name,

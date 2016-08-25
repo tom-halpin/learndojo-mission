@@ -86,4 +86,19 @@ class UnitStorage {
   static function delete($id) {
     db_delete('kaunit')->condition('id', $id)->execute();
   }
+
+  static function getIDByCountryMissionStrandUnit($country, $mission, $strand, $unit) {
+    $id = db_query('SELECT kau.id 
+                    FROM kaunit kau, kastrand kas, kamission kam, kacountry kac
+                    where 
+                     kau.strand_id = kas.id and
+                     kas.mission_id = kam.id and
+                     kam.country_id = kac.id and
+                     kac.name = :country and 
+                     kam.name = :mission and
+                     kas.name = :strand and 
+                     kau.name = :unit', array(':country' => $country, ':mission' => $mission, ':strand' => $strand, ':unit' => $unit ))->fetchField();
+    return $id;
+  }
+
 }

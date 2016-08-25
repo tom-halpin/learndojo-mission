@@ -149,17 +149,17 @@ class StudentStrandForm extends FormBase {
                 
         # configure the table header columns
         $header = array( 
-            array('data' => 'Country', 'field' => 'countryname', 'sort' => 'asc'),
+            /*array('data' => 'Country', 'field' => 'countryname', 'sort' => 'asc'),*/
             array('data' => 'Mission', 'field' => 'missionname', 'sort' => 'asc'),  
             array('data' => 'Strand', 'field' => 'strandname', 'sort' => 'asc'),            
             array('data' => 'Unit', 'field' => 'unit name', 'sort' => 'asc'),
             array('data' => 'Topic', 'field' => 'name', 'sort' => 'asc'),
             array('data' => 'Topic Description', 'field' => 'description'),
             array('data' => 'Core Content', 'field' => 'corecontent'),
-            array('data' => 'Learning Outcome', 'field' => 'learning_outcome'),
+            /*array('data' => 'Learning Outcome', 'field' => 'learning_outcome'),
             array('data' => 'Term', 'field' => 'termname'),
             array('data' => 'Week Number', 'field' => 'weeknumber'),
-            array('data' => 'Difficulty Index', 'field' => 'difficultyindex'),
+            array('data' => 'Difficulty Index', 'field' => 'difficultyindex'),*/
             array('data' => 'Topic Type', 'field' => 'topictypename'),
             array('data' => 'Topic Content', 'field' => 'ka_url'));
         
@@ -174,17 +174,17 @@ class StudentStrandForm extends FormBase {
         foreach ($results as $row) {
             // build row
             $rows[] = array('data' => array(
-                                        $row->countryname,
+                                        /*$row->countryname,*/
                                         $row->missionname,
                                         $row->strandname,
                                         $row->unitname,
                                         $row -> name, 
                                         $row -> description,
                                         ($row -> corecontent == true) ? 'Yes' : 'No', 
-                                        $row -> learning_outcome,
-                                        $row -> termname,
+                                        /*$row -> learning_outcome,*/
+                                        /*$row -> termname,
                                         $row -> weeknumber,
-                                        $row -> difficultyindex,
+                                        $row -> difficultyindex,*/
                                         $row -> topictypename,
                                         t('<a href="' . $row -> ka_url . '" target="_blank"> View Content </a>'),
                                         ));

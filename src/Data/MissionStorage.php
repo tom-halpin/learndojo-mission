@@ -72,4 +72,13 @@ class MissionStorage {
   static function delete($id) {
     db_delete('kamission')->condition('id', $id)->execute();
   }
+  
+  static function import($data, $countryid){
+    db_merge('kamission')->key(
+        array('name' => $data[1]))->fields(array(
+              'country_id' => $countryid,
+              'name' => $data[1],
+              'description' =>  $data[2],
+            ))->execute();
+  }
 }

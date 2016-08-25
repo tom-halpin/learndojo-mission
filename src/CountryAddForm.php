@@ -54,7 +54,7 @@ class CountryAddForm extends FormBase {
         } else {
             try {
                 CountryStorage::add(SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($description));
-                drupal_set_message(t('Topic type: ' . $name . ' has been added'));
+                drupal_set_message(t('Country: ' . $name . ' has been added'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the country name entered is unique."), 'error');
                 //return;
