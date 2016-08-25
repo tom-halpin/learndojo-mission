@@ -21,6 +21,8 @@ use Drupal\mission\Data\TopicTypeStorage;
 use Drupal\mission\Data\SupportedSiteStorage;
 use Drupal\mission\Data\TermStorage;
 
+include_once 'global.inc';
+
 class TopicAddForm extends FormBase {
     protected $id;
     protected $selectedmission;
@@ -39,32 +41,7 @@ class TopicAddForm extends FormBase {
         $countryoptions = $this->getCountries();
         $termoptions = $this -> getTerms();
         $formValues = $form_state -> getValues();
-        /*
-        if ($topic -> id > 0 ) {
-            // form values not set so make initial selections as if editing
-            $selectedmission = $topic->missionid;            
-            $strandoptions = $this -> getMissionStrands($selectedmission);
-            //$strandoptions = $this -> _ajaxGetStrands($selectedmission);
-            $selectedstrand = $topic -> strandid;
-            $unitoptions = $this -> getStrandUnits($selectedstrand);
-            //$unitoptions = $this -> _ajaxGetUnits($selectedstrand);
-            $selectedunit = $topic -> unitid;
-            $selectedterm = $topic -> termid;
-        } else {
-            // form values set so make selections based on selected values
-            $selectedmission = isset($formValues['mission_id']) ? $formValues['mission_id'] : key($missionoptions);  
-            $strandoptions = $this -> getMissionStrands($selectedmission);
-            //$strandoptions = $this -> _ajaxGetStrands($selectedmission);
-            $selectedstrand = isset($formValues['strand_id']) ? $formValues['strand_id'] : key($strandoptions);
-            //$selectedstrand = (array_key_exists($selectedstrand, $strandoptions)) ? $selectedstrand : '';
-            $unitoptions = $this -> getStrandUnits($selectedstrand);       
-            //$unitoptions = $this -> _ajaxGetUnits($selectedstrand);
-            $selectedunit = isset($formValues['unit_id']) ? $formValues['unit_id'] : key($unitoptions);
-            //$selectedunit = (array_key_exists($selectedunit, $unitoptions)) ? $selectedunit : '';
-            $selectedterm = isset($formValues['term_id']) ? $formValues['term_id'] : '';
-            $setdefault = false;
-        }
-*/
+
          $setmissiondefault = false;
          $setstranddefault = false;
          $setunitdefault = false;
@@ -273,11 +250,11 @@ class TopicAddForm extends FormBase {
 
         $form['ka_url'] = array('#type' => 'url', '#title' => t('Topic URL on External Site'), '#required' => TRUE, '#size' => 255, '#default_value' => ($topic) ? $topic -> ka_url : '', );
 
-        $form['difficultyindex'] = array('#type' => 'number', '#title' => t('Difficulty Index (between 1 and 5)'), '#required' => TRUE, '#min' => 1, '#max' => 5, '#default_value' => ($topic) ? $topic -> difficultyindex : '1', );
+        $form['difficultyindex'] = array('#type' => 'number', '#title' => t('Difficulty Index (between 1 and 5)'), '#required' => TRUE, '#min' => MIN_WEEK_NUMBER, '#max' => MAX_WEEK_NUMBER, '#default_value' => ($topic) ? $topic -> difficultyindex : '1', );
 
         $form['term_id'] = array('#type' => 'select', '#title' => 'Term', '#options' => $termoptions, '#required' => TRUE, '#form_test_required_error' => t('Please select something.'), '#default_value' => $selectedterm );
         
-        $form['weeknumber'] = array('#type' => 'number', '#title' => t('Week Number (between 1 and 52, leave at 1 if not known)'), '#min' => 1, '#max' => 52, '#required' => TRUE, '#default_value' => ($topic) ? $topic -> weeknumber : '1', );
+        $form['weeknumber'] = array('#type' => 'number', '#title' => t('Week Number (between 1 and 53, leave at 1 if not known)'), '#min' => MIN_DIFFICULTY_INDEX, '#max' => MAX_DIFFICULTY_INDEX, '#required' => TRUE, '#default_value' => ($topic) ? $topic -> weeknumber : '1', );
 
         $form['topictype_id'] = array('#type' => 'select', '#title' => 'Topic Type Name', '#options' => $topictypeoptions, '#required' => TRUE, '#form_test_required_error' => t('Please select something.'), '#default_value' => ($topic) ? $topic -> topictypeid : -1, );
 

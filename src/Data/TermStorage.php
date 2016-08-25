@@ -59,4 +59,10 @@ class TermStorage {
   static function delete($id) {
     db_delete('katerm')->condition('id', $id)->execute();
   }
+  
+  static function getIDByName($name) {
+    $id = db_query('SELECT id FROM {katerm} WHERE name = :name', array(':name' => $name))->fetchField();
+    return $id;
+  }
+    
 }

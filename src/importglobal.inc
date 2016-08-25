@@ -1,0 +1,25 @@
+<?php
+
+namespace Drupal\mission;
+
+define('IMPORT_TYPE_TOPIC', '0'); 
+
+define('TOPIC_IMPORT_NUM_COLUMNS', 15);
+
+define('TOPIC_IMPORT_COUNTRY', '0');
+define('TOPIC_IMPORT_MISSON', '1');
+define('TOPIC_IMPORT_STRAND', '2');
+define('TOPIC_IMPORT_UNIT', '3');
+define('TOPIC_IMPORT_NAME', '4');
+define('TOPIC_IMPORT_DESCRIPTION', '5');
+define('TOPIC_IMPORT_TOPIC_TYPE', '6');
+define('TOPIC_IMPORT_CORE_CONTENT', '7');
+define('TOPIC_IMPORT_DIFFICULTY_INDEX', '8');
+define('TOPIC_IMPORT_EXTERNAL_TOPIC', '9');
+define('TOPIC_IMPORT_EXTERNAL_URL', '10');
+define('TOPIC_IMPORT_LEARNING_OUTCOME', '11');
+define('TOPIC_IMPORT_NOTES', '12');
+define('TOPIC_IMPORT_TERM', '13');
+define('TOPIC_IMPORT_WEEK_NUMBER', '14');
+
+?> 

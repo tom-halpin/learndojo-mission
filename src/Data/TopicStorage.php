@@ -183,4 +183,21 @@ class TopicStorage {
   static function delete($id) {
     db_delete('katopic')->condition('id', $id)->execute();
   }
+  
+  static function import($unitid, $topicname, $description, $topictypeid, $corecontent, $difficultyindex , $externaltopic, $externalurl, $learningoutcome, $notes,  $termid, $weeknumber){
+    db_merge('katopic')->key(
+        array('name' => $topicname, 'unit_id' => $unitid))->fields(array(
+              'name' => $topicname,
+              'description' => $description,
+              'topictype_id' => $topictypeid,
+              'corecontent' => $corecontent,
+              'difficultyindex' => $difficultyindex,
+              'ka_topic' => $externaltopic,
+              'ka_url' => $externalurl,
+              'learning_outcome' => $learningoutcome,
+              'notes' => $notes,
+              'term_id' => $termid,
+              'weeknumber' => $weeknumber, 
+            ))->execute();
+  }
 }
