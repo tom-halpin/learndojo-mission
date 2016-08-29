@@ -32,7 +32,7 @@ class UnitStorage {
           $select->condition('kas.name', '%' . db_like($strand) . '%', 'LIKE');
         }  
         if (isset($unit)) {
-          $select->condition('kas.name', '%' . db_like($unit) . '%', 'LIKE');
+          $select->condition('kau.name', '%' . db_like($unit) . '%', 'LIKE');
         }         
         # execute the query
         $results = $select -> execute();

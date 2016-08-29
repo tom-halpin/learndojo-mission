@@ -168,7 +168,7 @@ class ImportValidator {
   
   private static function isempty($var) {
          $var = trim($var);
-         if(isset($var) === true && $var === '') {
+         if(isset($var) === true && trim($var) === '') {
             return true;
         }
         else {
