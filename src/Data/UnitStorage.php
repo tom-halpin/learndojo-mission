@@ -23,16 +23,16 @@ class UnitStorage {
         $select -> fields('kac', array('name')) ;
         $select->addField('kac', 'name', 'countryname'); // alias kamission.name        
         if (isset($country)) {
-          $select->condition('kac.name', '%' . db_like($country) . '%', 'LIKE');
+          $select->condition('kac.name', '%' . db_like(trim($country)) . '%', 'LIKE');
         }        
         if (isset($mission)) {
-          $select->condition('kam.name', '%' . db_like($mission) . '%', 'LIKE');
+          $select->condition('kam.name', '%' . db_like(trim($mission)) . '%', 'LIKE');
         }
         if (isset($strand)) {
-          $select->condition('kas.name', '%' . db_like($strand) . '%', 'LIKE');
+          $select->condition('kas.name', '%' . db_like(trim($strand)) . '%', 'LIKE');
         }  
         if (isset($unit)) {
-          $select->condition('kau.name', '%' . db_like($unit) . '%', 'LIKE');
+          $select->condition('kau.name', '%' . db_like(trim($unit)) . '%', 'LIKE');
         }         
         # execute the query
         $results = $select -> execute();
@@ -67,17 +67,17 @@ class UnitStorage {
   
   static function add($name, $strand_id, $description) {
     db_insert('kaunit')->fields(array(
-      'name' => $name,
+      'name' => trim($name),
 	  'strand_id' => $strand_id,
-      'description' => $description,
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $strand_id, $description) {
     db_update('kaunit')->fields(array(
-      'name' => $name,
+      'name' => trim($name),
 	  'strand_id' => $strand_id,
-      'description' => $description,
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();
@@ -97,8 +97,8 @@ class UnitStorage {
                      kac.name = :country and 
                      kam.name = :mission and
                      kas.name = :strand and 
-                     kau.name = :unit', array(':country' => $country, ':mission' => $mission, ':strand' => $strand, ':unit' => $unit ))->fetchField();
+                     kau.name = :unit', array(':country' => trim($country), ':mission' => trim($mission), 
+                                                ':strand' => trim($strand), ':unit' => trim($unit)))->fetchField();
     return $id;
   }
-
 }

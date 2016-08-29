@@ -17,10 +17,10 @@ class MissionStorage {
         $select -> fields('kac', array('name')) ;
         $select->addField('kac', 'name', 'countryname'); // alias country.name
         if (isset($mission)) {
-          $select->condition('kac.name', '%' . db_like($country) . '%', 'LIKE');
+          $select->condition('kac.name', '%' . db_like(trim($country)) . '%', 'LIKE');
         }                        
         if (isset($mission)) {
-          $select->condition('ka.name', '%' . db_like($mission) . '%', 'LIKE');
+          $select->condition('ka.name', '%' . db_like(trim($mission)) . '%', 'LIKE');
         }                        
         # execute the query
         $results = $select -> execute();
@@ -53,17 +53,17 @@ class MissionStorage {
   
   static function add($name, $country_id, $description) {
     db_insert('kamission')->fields(array(
-      'name' => $name,
+      'name' => trim($name),
       'country_id' => $country_id,
-      'description' => $description,
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $country_id, $description) {
     db_update('kamission')->fields(array(
-      'name' => $name,
+      'name' => trim($name),
       'country_id' => $country_id,
-      'description' => $description,
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();
@@ -75,10 +75,10 @@ class MissionStorage {
   
   static function import($data, $countryid){
     db_merge('kamission')->key(
-        array('name' => $data[1]))->fields(array(
+        array('name' => trim($data[1])))->fields(array(
               'country_id' => $countryid,
-              'name' => $data[1],
-              'description' =>  $data[2],
+              'name' => trim($data[1]),
+              'description' =>  trim($data[2]),
             ))->execute();
   }
 }

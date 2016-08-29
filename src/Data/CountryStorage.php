@@ -14,7 +14,7 @@ class CountryStorage {
                         -> limit($pagesize) 
                         -> orderByHeader($header);                        
         if (isset($country)) {
-          $select->condition('name', '%' . db_like($country) . '%', 'LIKE');
+          $select->condition('name', '%' . db_like(trim($country)) . '%', 'LIKE');
         }   
         # execute the query
         $results = $select -> execute();
@@ -41,21 +41,21 @@ class CountryStorage {
   }
 
   static function getIDByName($name) {
-    $id = db_query('SELECT id FROM {kacountry} WHERE name = :name', array(':name' => $name))->fetchField();
+    $id = db_query('SELECT id FROM {kacountry} WHERE name = :name', array(':name' => trim($name)))->fetchField();
     return $id;
   }
   
   static function add($name, $description) {
     db_insert('kacountry')->fields(array(
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $description) {
     db_update('kacountry')->fields(array(
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();
