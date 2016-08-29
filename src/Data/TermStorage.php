@@ -14,7 +14,7 @@ class TermStorage {
                         -> limit($pagesize) 
                         -> orderByHeader($header);
         if (isset($term)) {
-          $select->condition('name', '%' . db_like($term) . '%', 'LIKE');
+          $select->condition('name', '%' . db_like(trim($term)) . '%', 'LIKE');
         }   
         # execute the query
         $results = $select -> execute();
@@ -42,15 +42,15 @@ class TermStorage {
 
   static function add($name, $description) {
     db_insert('katerm')->fields(array(
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $description) {
     db_update('katerm')->fields(array(
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();
@@ -61,7 +61,7 @@ class TermStorage {
   }
   
   static function getIDByName($name) {
-    $id = db_query('SELECT id FROM {katerm} WHERE name = :name', array(':name' => $name))->fetchField();
+    $id = db_query('SELECT id FROM {katerm} WHERE name = :name', array(':name' => trim($name)))->fetchField();
     return $id;
   }
     

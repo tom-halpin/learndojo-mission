@@ -38,19 +38,19 @@ class TopicStorage {
         $select -> fields('katr', array('id', 'name')) ;
         $select->addField('katr', 'id', 'termid');  
         if (isset($country)) {
-          $select->condition('kac.name', '%' . db_like($country) . '%', 'LIKE');
+          $select->condition('kac.name', '%' . db_like(trim($country)) . '%', 'LIKE');
         }
         if (isset($mission)) {
-          $select->condition('kam.name', '%' . db_like($mission) . '%', 'LIKE');
+          $select->condition('kam.name', '%' . db_like(trim($mission)) . '%', 'LIKE');
         }
         if (isset($strand)) {
-          $select->condition('kas.name', '%' . db_like($strand) . '%', 'LIKE');
+          $select->condition('kas.name', '%' . db_like(trim($strand)) . '%', 'LIKE');
         }  
         if (isset($unit)) {
-          $select->condition('kau.name', '%' . db_like($unit) . '%', 'LIKE');
+          $select->condition('kau.name', '%' . db_like(trim($unit)) . '%', 'LIKE');
         }   
         if (isset($topic)) {
-          $select->condition('kat.name', '%' . db_like($topic) . '%', 'LIKE');
+          $select->condition('kat.name', '%' . db_like(trim($topic)) . '%', 'LIKE');
         }  
         # execute the query
         $results = $select -> execute();
@@ -147,34 +147,34 @@ class TopicStorage {
   static function add($unit_id, $name, $description, $corecontent, $learning_outcome, $ka_topic, $ka_url, $difficultyindex, $term_id, $weeknumber, $topictype_id, $notes) {
     db_insert('katopic')->fields(array(
        'unit_id' => $unit_id,
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
       'corecontent' => $corecontent,
-      'learning_outcome' => $learning_outcome,
-      'ka_topic' => $ka_topic,
-      'ka_url' => $ka_url,
+      'learning_outcome' => trim($learning_outcome),
+      'ka_topic' => trim($ka_topic),
+      'ka_url' => trim($ka_url),
       'difficultyindex' => $difficultyindex,
       'term_id' => $term_id,
       'weeknumber' => $weeknumber, 
       'topictype_id' => $topictype_id,
-      'notes' => $notes,
+      'notes' => trim($notes),
     ))->execute();
   }
 
   static function edit($id, $unit_id, $name, $description, $corecontent, $learning_outcome, $ka_topic, $ka_url, $difficultyindex, $term_id, $weeknumber, $topictype_id, $notes) {
     db_update('katopic')->fields(array(
       'unit_id' => $unit_id,
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
       'corecontent' => $corecontent,
-      'learning_outcome' => $learning_outcome,
-      'ka_topic' => $ka_topic,
-      'ka_url' => $ka_url,
+      'learning_outcome' => trim($learning_outcome),
+      'ka_topic' => trim($ka_topic),
+      'ka_url' => trim($ka_url),
       'difficultyindex' => $difficultyindex,
       'term_id' => $term_id,
-      'weeknumber' => $weeknumber,    
+      'weeknumber' => $weeknumber, 
       'topictype_id' => $topictype_id,
-      'notes' => $notes,
+      'notes' => trim($notes),
     ))
     ->condition('id', $id)
     ->execute();
@@ -186,16 +186,16 @@ class TopicStorage {
   
   static function import($unitid, $topicname, $description, $topictypeid, $corecontent, $difficultyindex , $externaltopic, $externalurl, $learningoutcome, $notes,  $termid, $weeknumber){
     db_merge('katopic')->key(
-        array('name' => $topicname, 'unit_id' => $unitid))->fields(array(
-              'name' => $topicname,
-              'description' => $description,
+        array('name' => trim($topicname), 'unit_id' => $unitid))->fields(array(
+              'name' => trim($topicname),
+              'description' => trim($description),
               'topictype_id' => $topictypeid,
               'corecontent' => $corecontent,
               'difficultyindex' => $difficultyindex,
-              'ka_topic' => $externaltopic,
-              'ka_url' => $externalurl,
-              'learning_outcome' => $learningoutcome,
-              'notes' => $notes,
+              'ka_topic' => trim($externaltopic),
+              'ka_url' => trim($externalurl),
+              'learning_outcome' => trim($learningoutcome),
+              'notes' => trim($notes),
               'term_id' => $termid,
               'weeknumber' => $weeknumber, 
             ))->execute();

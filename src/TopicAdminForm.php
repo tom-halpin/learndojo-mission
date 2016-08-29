@@ -111,7 +111,7 @@ class TopicAdminForm extends FormBase {
            
         # configure the table header columns
         $header = array( 
-            array('data' => 'Unit ID', 'field' => 'ID'), 
+            array('data' => 'Topic ID', 'field' => 'ID'), 
             array('data' => 'Country Name', 'field' => 'countryname', 'sort' => 'asc'),             
             array('data' => 'Mission Name', 'field' => 'missionname', 'sort' => 'asc'),  
             array('data' => 'Strand Name', 'field' => 'strandname', 'sort' => 'asc'),            

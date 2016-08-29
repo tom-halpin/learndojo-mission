@@ -14,7 +14,7 @@ class TopicTypeStorage {
                         -> limit($pagesize) 
                         -> orderByHeader($header);
         if (isset($topictype)) {
-          $select->condition('name', '%' . db_like($topictype) . '%', 'LIKE');
+          $select->condition('name', '%' . db_like(trim($topictype)) . '%', 'LIKE');
         }                           
         # execute the query
         $results = $select -> execute();
@@ -42,15 +42,15 @@ class TopicTypeStorage {
 
   static function add($name, $description) {
     db_insert('katopictype')->fields(array(
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $description) {
     db_update('katopictype')->fields(array(
-      'name' => $name,
-      'description' => $description,
+      'name' => trim($name),
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();
@@ -61,7 +61,7 @@ class TopicTypeStorage {
   }
   
   static function getIDByName($name) {
-    $id = db_query('SELECT id FROM {katopictype} WHERE name = :name', array(':name' => $name))->fetchField();
+    $id = db_query('SELECT id FROM {katopictype} WHERE name = :name', array(':name' => trim($name)))->fetchField();
     return $id;
   }  
 }

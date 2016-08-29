@@ -20,13 +20,13 @@ class StrandStorage {
         $select -> fields('kac', array('name')) ;
         $select->addField('kac', 'name', 'countryname'); // alias kacountry.name
         if (isset($country)) {
-          $select->condition('kac.name', '%' . db_like($country) . '%', 'LIKE');
+          $select->condition('kac.name', '%' . db_like(trim($country)) . '%', 'LIKE');
         }                
         if (isset($mission)) {
-          $select->condition('kam.name', '%' . db_like($mission) . '%', 'LIKE');
+          $select->condition('kam.name', '%' . db_like(trim($mission)) . '%', 'LIKE');
         }
         if (isset($strand)) {
-          $select->condition('kas.name', '%' . db_like($strand) . '%', 'LIKE');
+          $select->condition('kas.name', '%' . db_like(trim($strand)) . '%', 'LIKE');
         } 
         # execute the query
         $results = $select -> execute();
@@ -61,17 +61,17 @@ class StrandStorage {
   
   static function add($name, $mission_id, $description) {
     db_insert('kastrand')->fields(array(
-      'name' => $name,
+      'name' => trim($name),
 	  'mission_id' => $mission_id,
-      'description' => $description,
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $mission_id, $description) {
     db_update('kastrand')->fields(array(
-      'name' => $name,
+      'name' => trim($name),
 	  'mission_id' => $mission_id,
-      'description' => $description,
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();

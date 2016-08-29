@@ -14,7 +14,7 @@ class SupportedSiteStorage {
                         -> limit($pagesize) 
                         -> orderByHeader($header);
         if (isset($supportedsite)) {
-          $select->condition('name', '%' . db_like($supportedsite) . '%', 'LIKE');
+          $select->condition('name', '%' . db_like(trim($supportedsite)) . '%', 'LIKE');
         }   
         # execute the query
         $results = $select -> execute();
@@ -45,7 +45,7 @@ class SupportedSiteStorage {
 	$url = str_replace("http://","",$url);
 	$url = str_replace("https://","",$url);
 
-    $result = db_query("SELECT * FROM kasupportedsite where instr(:url, domain) > 0", array(':url' => $url))->fetchAllAssoc('id');
+    $result = db_query("SELECT * FROM kasupportedsite where instr(:url, domain) > 0", array(':url' => trim($url)))->fetchAllAssoc('id');
     if ($result) {
       return TRUE;
     }
@@ -55,17 +55,17 @@ class SupportedSiteStorage {
   }
   static function add($name, $domain, $description) {
     db_insert('kasupportedsite')->fields(array(
-      'name' => $name,
-	  'domain' => $domain,	  
-      'description' => $description,
+      'name' => trim($name),
+	  'domain' => trim($domain),	  
+      'description' => trim($description),
     ))->execute();
   }
 
   static function edit($id, $name, $domain, $description) {
     db_update('kasupportedsite')->fields(array(
-      'name' => $name,
-	  'domain' => $domain,
-      'description' => $description,
+      'name' => trim($name),
+	  'domain' => trim($domain),
+      'description' => trim($description),
     ))
     ->condition('id', $id)
     ->execute();

@@ -338,10 +338,11 @@ class ImportForm extends FormBase {
         //drupal_set_message(t('getIDByCountryMissionStrandUnit .') . ' ' . $data[0] . ' ' . $data[1] . ' ' . $data[2] . ' ' . $data[3] .' ID ' . $unitid);                  
         if(ImportValidator::ValidateTopicRow($data, $rowcount, $numcols, $rowerror, $msg, $unitid, $topictypeid, $termid))
         {
+           
           if($validateOnly == FALSE)
-            TopicStorage::import($unitid, $data[TOPIC_IMPORT_NAME], $data[TOPIC_IMPORT_DESCRIPTION], $topictypeid, $data[TOPIC_IMPORT_CORE_CONTENT], 
-                    $data[TOPIC_IMPORT_DIFFICULTY_INDEX] , $data[TOPIC_IMPORT_EXTERNAL_TOPIC], $data[TOPIC_IMPORT_EXTERNAL_URL], 
-                    $data[TOPIC_IMPORT_LEARNING_OUTCOME], $data[TOPIC_IMPORT_NOTES],  $termid, $data[TOPIC_IMPORT_WEEK_NUMBER]);
+            TopicStorage::import($unitid, utf8_encode($data[TOPIC_IMPORT_NAME]), utf8_encode($data[TOPIC_IMPORT_DESCRIPTION]), $topictypeid, $data[TOPIC_IMPORT_CORE_CONTENT], 
+                    $data[TOPIC_IMPORT_DIFFICULTY_INDEX] , utf8_encode($data[TOPIC_IMPORT_EXTERNAL_TOPIC]), utf8_encode($data[TOPIC_IMPORT_EXTERNAL_URL]), 
+                    utf8_encode($data[TOPIC_IMPORT_LEARNING_OUTCOME]), utf8_encode($data[TOPIC_IMPORT_NOTES]),  $termid, $data[TOPIC_IMPORT_WEEK_NUMBER]);
           
         }
     }
