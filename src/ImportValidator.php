@@ -25,37 +25,73 @@ class ImportValidator {
         $msg = $msg . t('Country must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
-    }            
-    if(ImportValidator::isempty($data[TOPIC_IMPORT_MISSON]))
+    }
+    if(strlen($data[TOPIC_IMPORT_COUNTRY]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Country name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }  
+    if(ImportValidator::isempty($data[TOPIC_IMPORT_MISSION]))
     {
         $msg = $msg . t('Mission must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     }
+    if(strlen($data[TOPIC_IMPORT_MISSION]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Mission name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
     if(ImportValidator::isempty($data[TOPIC_IMPORT_STRAND]))
     {
         $msg = $msg . t('Strand must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     }
+    if(strlen($data[TOPIC_IMPORT_STRAND]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Strand name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
     if(ImportValidator::isempty($data[TOPIC_IMPORT_UNIT]))
     {
         $msg = $msg . t('Unit must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     }   
+    if(strlen($data[TOPIC_IMPORT_UNIT]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Unit name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
     if(ImportValidator::isempty($data[TOPIC_IMPORT_NAME]))
     {
         $msg = $msg . t('Topic Name must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     } 
+    if(strlen($data[TOPIC_IMPORT_NAME]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Topic name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
     if(ImportValidator::isempty($data[TOPIC_IMPORT_DESCRIPTION]))
     {
         $msg = $msg . t('Topic Description must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     } 
+    if(strlen($data[TOPIC_IMPORT_DESCRIPTION]) > DESCRIPTION_LENGTH)
+    {
+        $msg = $msg . t('Topic Description cannot be longer than :len. Row :rowcount.', array(':len' => DESCRIPTION_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
     if(ImportValidator::isempty($data[TOPIC_IMPORT_TOPIC_TYPE]))
     {
         $msg = $msg . t('Topic Type must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
@@ -97,6 +133,12 @@ class ImportValidator {
         $rowerror = true;
         $errorrow = $rowcount;
     } 
+    if(strlen($data[TOPIC_IMPORT_EXTERNAL_TOPIC]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('External Topic cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
     if(ImportValidator::isempty($data[TOPIC_IMPORT_EXTERNAL_URL]))
     {
         $msg = $msg . t('External Url must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
@@ -114,16 +156,33 @@ class ImportValidator {
         $rowerror = true;
         $errorrow = $rowcount;
     } 
-
+    if(strlen($data[TOPIC_IMPORT_LEARNING_OUTCOME]) > LEARNING_OUTCOME_LENGTH)
+    {
+        $msg = $msg . t('Learning Outcome cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
     if(ImportValidator::isempty($data[TOPIC_IMPORT_NOTES]))
     {
         $msg = $msg . t('Notes must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     } 
+    if(strlen($data[TOPIC_IMPORT_NOTES]) > DESCRIPTION_LENGTH)
+    {
+        $msg = $msg . t('Notes cannot be longer than :len. Row :rowcount.', array(':len' => DESCRIPTION_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
     if(ImportValidator::isempty($data[TOPIC_IMPORT_TERM]))
     {
         $msg = $msg . t('Term must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[TOPIC_IMPORT_TERM]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Term cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;
     } 
@@ -147,7 +206,7 @@ class ImportValidator {
     //drupal_set_message('Import Validator ID ' . ' ' . $countryid); 
     if(($unitid >= 1) == FALSE)
     {
-        $msg = $msg . t('Country ' . $data[TOPIC_IMPORT_COUNTRY] . ' ' . 'Mission ' . $data[TOPIC_IMPORT_MISSON] . ' ' . 'Strand ' . $data[TOPIC_IMPORT_STRAND] . ' ' . 'Unit ' . $data[TOPIC_IMPORT_UNIT] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
+        $msg = $msg . t('Country ' . $data[TOPIC_IMPORT_COUNTRY] . ' ' . 'Mission ' . $data[TOPIC_IMPORT_MISSION] . ' ' . 'Strand ' . $data[TOPIC_IMPORT_STRAND] . ' ' . 'Unit ' . $data[TOPIC_IMPORT_UNIT] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;                
     }

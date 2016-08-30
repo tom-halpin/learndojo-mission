@@ -12,6 +12,8 @@ use Drupal\Component\Utility\SafeMarkup;
 
 use Drupal\mission\Data\TermStorage;
 
+include_once 'global.inc';
+
 class TermAddForm extends FormBase {
     protected $id;
 
@@ -23,8 +25,8 @@ class TermAddForm extends FormBase {
         $this -> id = \Drupal::request() -> get('id');
         $term = TermStorage::get($this -> id);
 
-        $form['name'] = array('#type' => 'textfield', '#title' => t('Term Name'), '#required' => TRUE, '#default_value' => ($term) ? $term -> name : '', );
-        $form['description'] = array('#type' => 'textarea', '#title' => t('Term Description'), '#required' => TRUE, '#default_value' => ($term) ? $term -> description : '', );
+        $form['name'] = array('#type' => 'textfield', '#title' => t('Term Name'), '#required' => TRUE, '#default_value' => ($term) ? $term -> name : '',  '#attributes' => array('maxlength' => NAME_LENGTH), );
+        $form['description'] = array('#type' => 'textarea', '#title' => t('Term Description'), '#required' => TRUE, '#default_value' => ($term) ? $term -> description : '',  '#attributes' => array('maxlength' => DESCRIPTION_LENGTH), );
         $form['actions'] = array('#type' => 'actions');
         $form['actions']['submit'] = array('#type' => 'submit', '#value' => ($term) ? t('Save') : t('Add'), );
 

@@ -231,11 +231,11 @@ class TopicAddForm extends FormBase {
         
         }
 
-        $form['name'] = array('#type' => 'textfield', '#title' => t('Topic Name'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> name : '', );
+        $form['name'] = array('#type' => 'textfield', '#title' => t('Topic Name'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> name : '',  '#attributes' => array('maxlength' => NAME_LENGTH), );
 
         $form['corecontent'] = array('#type' => 'checkbox', '#title' => t('Core Content'), '#default_value' => ($topic) ? $topic -> corecontent : true, );
 
-        $form['description'] = array('#type' => 'textarea', '#title' => t('Topic Description'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> description : '', );
+        $form['description'] = array('#type' => 'textarea', '#title' => t('Topic Description'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> description : '',  '#attributes' => array('maxlength' => DESCRIPTION_LENGTH), );
 
         /* build array for Topic Type drop down list */
         foreach (TopicTypeStorage::getAll() as $id => $content) {
@@ -244,11 +244,11 @@ class TopicAddForm extends FormBase {
             $topictypeoptions[$key] = $value;
         }
 
-        $form['learning_outcome'] = array('#type' => 'textarea', '#title' => t('Learning Outcome'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> learning_outcome : '', );
+        $form['learning_outcome'] = array('#type' => 'textarea', '#title' => t('Learning Outcome'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> learning_outcome : '',  '#attributes' => array('maxlength' => LEARNING_OUTCOME_LENGTH), );
 
-        $form['ka_topic'] = array('#type' => 'textfield', '#title' => t('Topic Title on External Site'), '#required' => TRUE, '#size' => 255, '#default_value' => ($topic) ? $topic -> ka_topic : '', );
+        $form['ka_topic'] = array('#type' => 'textfield', '#title' => t('Topic Title on External Site'), '#required' => TRUE, '#size' => 255, '#default_value' => ($topic) ? $topic -> ka_topic : '',  '#attributes' => array('maxlength' => NAME_LENGTH), );
 
-        $form['ka_url'] = array('#type' => 'url', '#title' => t('Topic URL on External Site'), '#required' => TRUE, '#size' => 255, '#default_value' => ($topic) ? $topic -> ka_url : '', );
+        $form['ka_url'] = array('#type' => 'url', '#title' => t('Topic URL on External Site'), '#required' => TRUE, '#size' => 255, '#default_value' => ($topic) ? $topic -> ka_url : '',  '#attributes' => array('maxlength' => URL_LENGTH), );
 
         $form['difficultyindex'] = array('#type' => 'number', '#title' => t('Difficulty Index (between 1 and 5)'), '#required' => TRUE, '#min' => MIN_WEEK_NUMBER, '#max' => MAX_WEEK_NUMBER, '#default_value' => ($topic) ? $topic -> difficultyindex : '1', );
 
@@ -258,7 +258,7 @@ class TopicAddForm extends FormBase {
 
         $form['topictype_id'] = array('#type' => 'select', '#title' => 'Topic Type Name', '#options' => $topictypeoptions, '#required' => TRUE, '#form_test_required_error' => t('Please select something.'), '#default_value' => ($topic) ? $topic -> topictypeid : -1, );
 
-        $form['notes'] = array('#type' => 'textarea', '#title' => t('Notes'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> notes : '', );
+        $form['notes'] = array('#type' => 'textarea', '#title' => t('Notes'), '#required' => TRUE, '#default_value' => ($topic) ? $topic -> notes : '',  '#attributes' => array('maxlength' => DESCRIPTION_LENGTH), );
 
         $form['actions'] = array('#type' => 'actions');
         $form['actions']['submit'] = array('#type' => 'submit', '#value' => ($topic) ? t('Save') : t('Add'), );

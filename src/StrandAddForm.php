@@ -16,6 +16,8 @@ use Drupal\mission\Data\CountryStorage;
 use Drupal\mission\Data\MissionStorage;
 use Drupal\mission\Data\StrandStorage;
 
+include_once 'global.inc';
+
 class StrandAddForm extends FormBase {
     protected $id;
 
@@ -102,8 +104,8 @@ class StrandAddForm extends FormBase {
         }        
 
          
-        $form['name'] = array('#type' => 'textfield', '#title' => t('Strand Name'), '#required' => TRUE, '#default_value' => ($strand) ? $strand -> name : '', );
-        $form['description'] = array('#type' => 'textarea', '#title' => t('Strand Description'), '#required' => TRUE, '#default_value' => ($strand) ? $strand -> description : '', );
+        $form['name'] = array('#type' => 'textfield', '#title' => t('Strand Name'), '#required' => TRUE, '#default_value' => ($strand) ? $strand -> name : '', '#attributes' => array('maxlength' => NAME_LENGTH), );
+        $form['description'] = array('#type' => 'textarea', '#title' => t('Strand Description'), '#required' => TRUE, '#default_value' => ($strand) ? $strand -> description : '',  '#attributes' => array('maxlength' => DESCRIPTION_LENGTH), );
 
 
         $form['actions'] = array('#type' => 'actions');

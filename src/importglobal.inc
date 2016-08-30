@@ -7,7 +7,7 @@ define('IMPORT_TYPE_TOPIC', '0');
 define('TOPIC_IMPORT_NUM_COLUMNS', 15);
 
 define('TOPIC_IMPORT_COUNTRY', '0');
-define('TOPIC_IMPORT_MISSON', '1');
+define('TOPIC_IMPORT_MISSION', '1');
 define('TOPIC_IMPORT_STRAND', '2');
 define('TOPIC_IMPORT_UNIT', '3');
 define('TOPIC_IMPORT_NAME', '4');

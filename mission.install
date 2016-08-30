@@ -8,8 +8,8 @@ function mission_install() {
         db_query("
             CREATE TABLE kacountry(
               id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-              name VARCHAR(128) NOT NULL,
-              description VARCHAR(255) NOT NULL,
+              name VARCHAR(255) NOT NULL,
+              description VARCHAR(512) NOT NULL,
               last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               PRIMARY KEY(id),
               UNIQUE KEY(name)
@@ -23,8 +23,8 @@ function mission_install() {
 			CREATE TABLE kamission(
 			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			  country_id INT UNSIGNED NOT NULL,
-			  name VARCHAR(128) NOT NULL,
-			  description VARCHAR(255) NOT NULL,
+			  name VARCHAR(255) NOT NULL,
+			  description VARCHAR(512) NOT NULL,
 			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  PRIMARY KEY(id),
 			  UNIQUE KEY(country_id, name),
@@ -39,8 +39,8 @@ function mission_install() {
 			CREATE TABLE kastrand(
 			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			  mission_id INT UNSIGNED NOT NULL,
-			  name VARCHAR(128) NOT NULL,
-			  description VARCHAR(255) NOT NULL,
+			  name VARCHAR(255) NOT NULL,
+			  description VARCHAR(512) NOT NULL,
 			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  PRIMARY KEY(id),
 			  UNIQUE KEY(mission_id, name),
@@ -55,8 +55,8 @@ function mission_install() {
 			CREATE TABLE kaunit(
 			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			  strand_id INT UNSIGNED NOT NULL,
-			  name VARCHAR(128) NOT NULL,
-			  description VARCHAR(255) NOT NULL,
+			  name VARCHAR(255) NOT NULL,
+			  description VARCHAR(512) NOT NULL,
 			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  PRIMARY KEY(id),
 			  UNIQUE KEY(strand_id, name),
@@ -70,8 +70,8 @@ function mission_install() {
 		db_query("
 			CREATE TABLE katopictype(
 			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			  name VARCHAR(128) NOT NULL,
-			  description VARCHAR(255) NOT NULL,
+			  name VARCHAR(255) NOT NULL,
+			  description VARCHAR(512) NOT NULL,
 			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  PRIMARY KEY(id),
 			  UNIQUE KEY(name)
@@ -84,8 +84,8 @@ function mission_install() {
         db_query("
             CREATE TABLE katerm(
               id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-              name VARCHAR(128) NOT NULL,
-              description VARCHAR(255) NOT NULL,
+              name VARCHAR(255) NOT NULL,
+              description VARCHAR(512) NOT NULL,
               last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               PRIMARY KEY(id),
               UNIQUE KEY(name)
@@ -99,8 +99,8 @@ function mission_install() {
 			CREATE TABLE katopic(
 			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			  unit_id INT UNSIGNED NOT NULL,
-			  name VARCHAR(128) NOT NULL,
-			  description VARCHAR(255) NOT NULL,
+			  name VARCHAR(255) NOT NULL,
+			  description VARCHAR(512) NOT NULL,
 			  corecontent BOOLEAN not null,
 			  learning_outcome VARCHAR(1024) NOT NULL,
 			  ka_topic VARCHAR(255) NOT NULL,
@@ -125,9 +125,9 @@ function mission_install() {
 		db_query("
 			CREATE TABLE kasupportedsite(
 			  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			  name VARCHAR(128) NOT NULL,
+			  name VARCHAR(255) NOT NULL,
 			  domain VARCHAR(256) NOT NULL,
-			  description VARCHAR(255) NOT NULL,
+			  description VARCHAR(512) NOT NULL,
 			  last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  PRIMARY KEY(id),
 			  UNIQUE KEY(name)

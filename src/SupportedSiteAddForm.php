@@ -12,6 +12,8 @@ use Drupal\Component\Utility\SafeMarkup;
 
 use Drupal\mission\Data\SupportedSiteStorage;
 
+include_once 'global.inc';
+
 class SupportedSiteAddForm extends FormBase {
     protected $id;
 
