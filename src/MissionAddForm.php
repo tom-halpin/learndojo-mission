@@ -13,6 +13,8 @@ use Drupal\Component\Utility\SafeMarkup;
 use Drupal\mission\Data\CountryStorage;
 use Drupal\mission\Data\MissionStorage;
 
+include_once 'global.inc';
+
 class MissionAddForm extends FormBase {
     protected $id;
 
@@ -24,8 +26,8 @@ class MissionAddForm extends FormBase {
         $this -> id = \Drupal::request() -> get('id');
         $mission = MissionStorage::get($this -> id);
 
-        $form['name'] = array('#type' => 'textfield', '#title' => t('Mission Name'), '#required' => TRUE, '#default_value' => ($mission) ? $mission -> name : '', );
-        $form['description'] = array('#type' => 'textarea', '#title' => t('Mission Description'), '#required' => TRUE, '#default_value' => ($mission) ? $mission -> description : '', );
+        $form['name'] = array('#type' => 'textfield', '#title' => t('Mission Name'), '#required' => TRUE, '#default_value' => ($mission) ? $mission -> name : '', '#attributes' => array('maxlength' => NAME_LENGTH), );
+        $form['description'] = array('#type' => 'textarea', '#title' => t('Mission Description'), '#required' => TRUE, '#default_value' => ($mission) ? $mission -> description : '', '#attributes' => array('maxlength' => DESCRIPTION_LENGTH),);
         
         
         /* build array for Mission drop down list */

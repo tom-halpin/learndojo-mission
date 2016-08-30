@@ -12,6 +12,8 @@ use Drupal\Component\Utility\SafeMarkup;
 
 use Drupal\mission\Data\TopicTypeStorage;
 
+include_once 'global.inc';
+
 class TopicTypeAddForm extends FormBase {
     protected $id;
 
@@ -23,8 +25,8 @@ class TopicTypeAddForm extends FormBase {
         $this -> id = \Drupal::request() -> get('id');
         $topictype = TopicTypeStorage::get($this -> id);
 
-        $form['name'] = array('#type' => 'textfield', '#title' => t('Topic Type Name'), '#required' => TRUE, '#default_value' => ($topictype) ? $topictype -> name : '', );
-        $form['description'] = array('#type' => 'textarea', '#title' => t('Topic Type Description'), '#required' => TRUE, '#default_value' => ($topictype) ? $topictype -> description : '', );
+        $form['name'] = array('#type' => 'textfield', '#title' => t('Topic Type Name'), '#required' => TRUE, '#default_value' => ($topictype) ? $topictype -> name : '',  '#attributes' => array('maxlength' => NAME_LENGTH), );
+        $form['description'] = array('#type' => 'textarea', '#title' => t('Topic Type Description'), '#required' => TRUE, '#default_value' => ($topictype) ? $topictype -> description : '',  '#attributes' => array('maxlength' => DESCRIPTION_LENGTH), );
         $form['actions'] = array('#type' => 'actions');
         $form['actions']['submit'] = array('#type' => 'submit', '#value' => ($topictype) ? t('Save') : t('Add'), );
 

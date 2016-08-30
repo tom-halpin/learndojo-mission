@@ -12,6 +12,8 @@ use Drupal\Component\Utility\SafeMarkup;
 
 use Drupal\mission\Data\CountryStorage;
 
+include_once 'global.inc';
+
 class CountryAddForm extends FormBase {
     protected $id;
 
@@ -23,8 +25,8 @@ class CountryAddForm extends FormBase {
         $this -> id = \Drupal::request() -> get('id');
         $country = CountryStorage::get($this -> id);
 
-        $form['name'] = array('#type' => 'textfield', '#title' => t('Country Name'), '#required' => TRUE, '#default_value' => ($country) ? $country -> name : '', );
-        $form['description'] = array('#type' => 'textarea', '#title' => t('Country Description'), '#required' => TRUE, '#default_value' => ($country) ? $country -> description : '', );
+        $form['name'] = array('#type' => 'textfield', '#title' => t('Country Name'), '#required' => TRUE, '#default_value' => ($country) ? $country -> name : '',  '#attributes' => array('maxlength' => NAME_LENGTH),);
+        $form['description'] = array('#type' => 'textarea', '#title' => t('Country Description'), '#required' => TRUE, '#default_value' => ($country) ? $country -> description : '', '#attributes' => array('maxlength' => DESCRIPTION_LENGTH), );
         $form['actions'] = array('#type' => 'actions');
         $form['actions']['submit'] = array('#type' => 'submit', '#value' => ($country) ? t('Save') : t('Add'), );
 

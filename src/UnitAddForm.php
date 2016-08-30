@@ -17,6 +17,8 @@ use Drupal\mission\Data\MissionStorage;
 use Drupal\mission\Data\StrandStorage;
 use Drupal\mission\Data\UnitStorage;
 
+include_once 'global.inc';
+
 class UnitAddForm extends FormBase {
   protected $id;
 
@@ -160,12 +162,14 @@ class UnitAddForm extends FormBase {
       '#title' => t('Unit Name'),
 	  '#required' => TRUE,
       '#default_value' => ($unit) ? $unit->name : '',
+      '#attributes' => array('maxlength' => NAME_LENGTH),
     );
     $form['description'] = array(
       '#type' => 'textarea',
       '#title' => t('Unit Description'),
 	  '#required' => TRUE,
       '#default_value' => ($unit) ? $unit->description : '',
+      '#attributes' => array('maxlength' => DESCRIPTION_LENGTH),      
     );
 
     $form['actions'] = array('#type' => 'actions');

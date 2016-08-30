@@ -33,7 +33,9 @@ class ImportForm extends FormBase {
   }
 
   function buildForm(array $form, FormStateInterface $form_state) {
-	 
+	
+    $formValues = $form_state -> getValues();
+     
 	//https://www.monarchdigital.com/blog/2012-06-06/upload-and-import-files-your-drupal-site
 	$form = array();
     $form['instructions'] =  array(
@@ -55,16 +57,29 @@ class ImportForm extends FormBase {
 	//$importtypes = array('Mission', 'Strand', 'Unit', 'Topic');
 	$importtypes = array('Topic');
 	
+    $selectedImportType =  key($importtypes);
+    if (isset($formValues['import_type']))
+    {
+       $selectedImportType = $formValues['import_type']   ;
+    } 
+         
 	$form['import_type'] = array(
 		'#type' => 'select',
 		'#title' => 'Import Type',
 		'#options' => $importtypes,
 		'#required' => TRUE,
+		'#default_value' => $selectedImportType,
 		'#form_test_required_error' => t('Please select a file to upload.'),
 	);
   
     $form['skipheader'] = array('#type' => 'checkbox', '#title' => t('Skip Header Row'), '#default_value' => true );
 
+    $import = '';
+    if (isset($formValues['import']))
+    {
+       $import = $formValues['import']   ;
+    } 
+    
     $form['import'] = array(
         '#title' => t('Import'),
         '#type' => 'managed_file',
@@ -73,6 +88,7 @@ class ImportForm extends FormBase {
         '#upload_validators' => array(
           'file_validate_extensions' => array('xls'),
         ),
+        '#default_value' => $import, 
       );
        
 	  //Create new mission link that uses ajax to open the add mission form in a modal window
@@ -237,7 +253,7 @@ class ImportForm extends FormBase {
         {
           $country = $reader->val($row, TOPIC_IMPORT_COUNTRY + 1, $sheet);
           //drupal_set_message(t('Country.') . ' ' . $country);          
-          $mission = $reader->val($row, TOPIC_IMPORT_MISSON + 1, $sheet);
+          $mission = $reader->val($row, TOPIC_IMPORT_MISSION + 1, $sheet);
           $strand = $reader->val($row, TOPIC_IMPORT_STRAND + 1, $sheet);
           $unit = $reader->val($row, TOPIC_IMPORT_UNIT + 1, $sheet);
           $topicname = $reader->val($row, TOPIC_IMPORT_NAME + 1, $sheet);
@@ -330,7 +346,7 @@ class ImportForm extends FormBase {
     if($importtype == IMPORT_TYPE_TOPIC)
     {
         //$countryid = CountryStorage::getIDByName($data[0]);
-        $unitid = UnitStorage::getIDByCountryMissionStrandUnit($data[TOPIC_IMPORT_COUNTRY], $data[TOPIC_IMPORT_MISSON], 
+        $unitid = UnitStorage::getIDByCountryMissionStrandUnit($data[TOPIC_IMPORT_COUNTRY], $data[TOPIC_IMPORT_MISSION], 
                                                                 $data[TOPIC_IMPORT_STRAND], $data[TOPIC_IMPORT_UNIT]);
         $topictypeid = TopicTypeStorage::getIDByName($data[TOPIC_IMPORT_TOPIC_TYPE]);  
         $termid = TermStorage::getIDByName($data[TOPIC_IMPORT_TERM]);
