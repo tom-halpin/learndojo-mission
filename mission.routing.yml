@@ -322,8 +322,26 @@ student_topic:
   requirements:
     _permission: 'student mission forms'
 #    _role: 'Administrator+ContentAdmin+ContentEditor'
-    
-    
+   
+#student routings
+classes:
+  path: '/ka/student/classes'
+  defaults:
+    _form: '\Drupal\mission\ClassesForm'
+    _title: 'Classes'
+  requirements:
+    _permission: 'student mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+
+topics:
+  path: '/ka/student/topics'
+  defaults:
+    _form: '\Drupal\mission\TopicsForm'
+    _title: 'Topics'
+  requirements:
+    _permission: 'student mission forms'
+#    _role: 'Administrator+ContentAdmin+ContentEditor'
+   
 # note on _role: Specify one or more role IDs which should have access to the page. 
 # If you join them with "+", the user needs to have just one of the roles. 
 # If you join them with "," the user needs to have all of the specified roles.

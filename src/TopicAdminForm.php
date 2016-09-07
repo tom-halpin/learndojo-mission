@@ -163,8 +163,8 @@ class TopicAdminForm extends FormBase {
         $table = array('#theme' => 'table', 
                         '#header' => $header, 
                         '#rows' => $rows, 
-                        '#empty' => t('No units found!'),
-                        '#attributes' => array('id' => 'unit-table', ));
+                        '#empty' => t('No topics found!'),
+                        '#attributes' => array('id' => 'topic-table', ));
                         
         // create pager
         $pager = array('#type' => 'pager');

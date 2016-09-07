@@ -1,6 +1,6 @@
 <?php
 function mission_install() {
- 
+ /*
 	// Create database tables
 	
     if (db_table_exists('kacountry') == 0)
@@ -194,6 +194,7 @@ function mission_install() {
 }
 
 function mission_uninstall() {
+    /*
 	// Drop tables
 	if (db_table_exists('kasupportedsite')) {
 		db_query("DROP TABLE {kasupportedsite}");
@@ -220,5 +221,6 @@ function mission_uninstall() {
 	   if (db_table_exists('kacountry')) {
         db_query("DROP TABLE {kacountry}");
     }
+    */
 }
 

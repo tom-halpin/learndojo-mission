@@ -28,7 +28,7 @@ class MissionStorage {
   }
   
    static function getAll() {
-    $result = db_query('SELECT m.id, m.country_id, m.name, m.description, c.name as missionname FROM kamission m, kacountry c where m.country_id = c.id')->fetchAllAssoc('id');
+    $result = db_query('SELECT m.id, m.country_id, m.name, m.description, c.name as countryname FROM kamission m, kacountry c where m.country_id = c.id')->fetchAllAssoc('id');
     return $result;
   }
 
@@ -37,7 +37,7 @@ class MissionStorage {
   }
 
   static function get($id) {
-    $result = db_query('SELECT m.id, m.country_id, m.name, m.description, c.name as missionname FROM kamission m, kacountry c where m.country_id = c.id and m.id = :id', array(':id' => $id))->fetchAllAssoc('id');
+    $result = db_query('SELECT m.id, m.country_id, m.name, m.description, c.name as countryname FROM kamission m, kacountry c where m.country_id = c.id and m.id = :id', array(':id' => $id))->fetchAllAssoc('id');
     if ($result) {
       return $result[$id];
     }
@@ -47,7 +47,7 @@ class MissionStorage {
   }
   
   static function getAllForCountry($country_id) {
-    $result = db_query('SELECT m.id, m.country_id, m.name, m.description, c.name as missionname FROM kamission m, kacountry c where m.country_id = c.id and m.country_id = :country_id', array(':country_id' => $country_id))->fetchAllAssoc('id');
+    $result = db_query('SELECT m.id, m.country_id, m.name, m.description, c.name as countryname FROM kamission m, kacountry c where m.country_id = c.id and m.country_id = :country_id', array(':country_id' => $country_id))->fetchAllAssoc('id');
      return $result;
   }
   
