@@ -109,9 +109,9 @@ function mission_array() {
       'title' => 'Student Strand',
       'route_name' => 'student_strand',
     ),
-    '/ka/student/studenttopic' => array(
-      'title' => 'Student Topic',
-      'route_name' => 'student_topic',
-    ),    
+    '/ka/student/classes' => array(
+      'title' => 'Classes',
+      'route_name' => 'classes',
+    ),
   );
 }

@@ -57,7 +57,7 @@ class TopicStorage {
         return $results;
   }
 
-    static function loadStudentGrid($header, $pagesize, $unitid, $corecontent)
+  static function loadStudentGrid($header, $pagesize, $unitid, $corecontent)
   {
         # build the query requesting built in sort and paging support
         $select = db_select('katopic', 'kat') -> extend('Drupal\Core\Database\Query\PagerSelectExtender') -> extend('Drupal\Core\Database\Query\TableSortExtender');
@@ -113,6 +113,25 @@ class TopicStorage {
                 c.id = d.unit_id AND
                 e.id = d.topictype_id AND
                 f.id = d.term_id')->fetchAllAssoc('id');
+    return $result;
+  }
+  
+  static function getAllForUnit($unit_id) {
+    $result = db_query('SELECT s.id, s.mission_id, s.name, s.description, m.name as missionname, m.country_id, c.name as countryname  
+                        FROM kastrand s, kamission m, kacountry c where s.mission_id = m.id and m.country_id = c.id and s.mission_id = :mission_id', array(':mission_id' => $mission_id))->fetchAllAssoc('id');
+    $result = db_query('SELECT a.id as missionid, a.name as missionname, 
+                b.id as strandid, b.name as strandname, 
+                c.id as unitid, c.name as unitname, 
+                d.id, d.name, d.description, d.corecontent, d.learning_outcome, d.ka_topic, d.ka_url, d.difficultyindex, d.term_id, d.weeknumber,
+                d.topictype_id as topictypeid, e.name as topictypename, d.notes
+                FROM kamission a, kastrand b, kaunit c, katopic d, katopictype e, katerm f
+                where 
+                a.id = b.mission_id AND 
+                b.id = c.strand_id AND
+                c.id = d.unit_id AND
+                e.id = d.topictype_id AND
+                f.id = d.term_id AND 
+                d.unit_id = :unit_id', array(':unit_id' => $unit_id))->fetchAllAssoc('id');                        
     return $result;
   }
   
