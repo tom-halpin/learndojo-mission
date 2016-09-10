@@ -8,7 +8,7 @@ namespace Drupal\mission;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 
 use Drupal\mission\Data\SupportedSiteStorage;
 
@@ -44,12 +44,12 @@ class SupportedSiteAddForm extends FormBase {
     }
 
     function submitForm(array &$form, FormStateInterface $form_state) {
-        $name = $form_state -> getValue('name');
-        $domain = $form_state -> getValue('domain');
-        $description = $form_state -> getValue('description');
+        $name = Html::escape($form_state -> getValue('name'));
+        $domain = Html::escape($form_state -> getValue('domain'));
+        $description = Html::escape($form_state -> getValue('description'));
         if (!empty($this -> id)) {
             try {
-                SupportedSiteStorage::edit($this -> id, SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($domain), SafeMarkup::checkPlain($description));
+                SupportedSiteStorage::edit($this -> id, $name, $domain, $description);
                 drupal_set_message(t('Supported site: ' . $name . ' has been edited'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the supported site name entered is unique."), 'error');
@@ -57,7 +57,7 @@ class SupportedSiteAddForm extends FormBase {
             }
         } else {
             try {
-                SupportedSiteStorage::add(SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($domain), SafeMarkup::checkPlain($description));
+                SupportedSiteStorage::add($name, $domain, $description);
                 drupal_set_message(t('Supported site: ' . $name . ' has been added'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the supported site name entered is unique."), 'error');

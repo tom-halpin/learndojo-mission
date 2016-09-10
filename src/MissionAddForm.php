@@ -8,7 +8,7 @@ namespace Drupal\mission;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 
 use Drupal\mission\Data\CountryStorage;
 use Drupal\mission\Data\MissionStorage;
@@ -61,11 +61,11 @@ class MissionAddForm extends FormBase {
     function submitForm(array &$form, FormStateInterface $form_state) {
             
         $country_id = $form_state -> getValue('country_id');
-        $name = $form_state -> getValue('name');
-        $description = $form_state -> getValue('description');
+        $name = Html::escape($form_state -> getValue('name'));
+        $description = Html::escape($form_state -> getValue('description'));
         if (!empty($this -> id)) {
             try {
-                MissionStorage::edit($this -> id, SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($country_id), SafeMarkup::checkPlain($description));
+                MissionStorage::edit($this -> id, $name, $country_id, $description);
                 drupal_set_message(t('Mission: ' . $name . ' has been edited'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the mission name entered is unique for the selected country."), 'error');
@@ -74,7 +74,7 @@ class MissionAddForm extends FormBase {
 
         } else {
             try {
-                MissionStorage::add(SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($country_id),  SafeMarkup::checkPlain($description));
+                MissionStorage::add($name, $country_id,  $description);
                 drupal_set_message(t('Mission: ' . $name . ' has been added'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the mission name entered is unique for the selected country."), 'error');
