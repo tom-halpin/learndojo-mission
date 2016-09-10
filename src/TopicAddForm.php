@@ -365,21 +365,21 @@ class TopicAddForm extends FormBase {
     function submitForm(array &$form, FormStateInterface $form_state) {
 
         $unit_id = $form_state -> getValue('unit_id');
-        $name = $form_state -> getValue('name');
-        $description = $form_state -> getValue('description');
-        $learning_outcome = $form_state -> getValue('learning_outcome');
+        $name = SafeMarkup::checkPlain($form_state -> getValue('name'));
+        $description = SafeMarkup::checkPlain($form_state -> getValue('description'));
+        $learning_outcome = SafeMarkup::checkPlain($form_state -> getValue('learning_outcome'));
         $corecontent = $form_state -> getValue('corecontent');
-        $ka_topic = $form_state -> getValue('ka_topic');
-        $ka_url = $form_state -> getValue('ka_url');
+        $ka_topic = SafeMarkup::checkPlain($form_state -> getValue('ka_topic'));
+        $ka_url = SafeMarkup::checkPlain($form_state -> getValue('ka_url'));
         $difficultyindex = $form_state -> getValue('difficultyindex');
         $term_id = $form_state -> getValue('term_id');
         $weeknumber = $form_state -> getValue('weeknumber');
         $topictype_id = $form_state -> getValue('topictype_id');
-        $notes = $form_state -> getValue('notes');
+        $notes = SafeMarkup::checkPlain($form_state -> getValue('notes'));
 
         if (!empty($this -> id)) {
             try {
-                TopicStorage::edit($this -> id, $unit_id, SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($description), $corecontent, SafeMarkup::checkPlain($learning_outcome), SafeMarkup::checkPlain($ka_topic), SafeMarkup::checkPlain($ka_url), SafeMarkup::checkPlain($difficultyindex), $term_id, $weeknumber, $topictype_id, SafeMarkup::checkPlain($notes));
+                TopicStorage::edit($this -> id, $unit_id, $name, $description, $corecontent, $learning_outcome, $ka_topic, $ka_url, $difficultyindex, $term_id, $weeknumber, $topictype_id, $notes);
                 drupal_set_message(t('Topic: ' . $name . ' has been edited'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the topic name entered is unique for the selected unit."), 'error');
@@ -387,7 +387,7 @@ class TopicAddForm extends FormBase {
             }
         } else {
             try {
-                TopicStorage::add($unit_id, SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($description), $corecontent, SafeMarkup::checkPlain($learning_outcome), SafeMarkup::checkPlain($ka_topic), SafeMarkup::checkPlain($ka_url), SafeMarkup::checkPlain($difficultyindex), $term_id, $weeknumber, $topictype_id, SafeMarkup::checkPlain($notes));
+                TopicStorage::add($unit_id, $name, $description, $corecontent, $learning_outcome, $ka_topic, $ka_url, $difficultyindex, $term_id, $weeknumber, $topictype_id, $notes);
                 drupal_set_message(t('Topic: ' . $name . ' has been added'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the topic name entered is unique for the selected unit."), 'error');

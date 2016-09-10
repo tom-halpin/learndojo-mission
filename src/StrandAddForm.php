@@ -8,7 +8,7 @@ namespace Drupal\mission;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Core;
 use Drupal\Core\Ajax;
 
@@ -154,12 +154,12 @@ class StrandAddForm extends FormBase {
     }
 
     function submitForm(array &$form, FormStateInterface $form_state) {
-        $name = $form_state -> getValue('name');
+        $name = Html::escape($form_state -> getValue('name'));
         $mission_id = $form_state -> getValue('mission_id');
-        $description = $form_state -> getValue('description');
+        $description = Html::escape($form_state -> getValue('description'));
         if (!empty($this -> id)) {
             try {
-                StrandStorage::edit($this -> id, SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($mission_id), SafeMarkup::checkPlain($description));
+                StrandStorage::edit($this -> id, $name, $mission_id, $description);
                 drupal_set_message(t('Strand: ' . $name . ' has been edited'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the strand name entered is unique for the selected mission."), 'error');
@@ -168,7 +168,7 @@ class StrandAddForm extends FormBase {
 
         } else {
             try {
-                StrandStorage::add(SafeMarkup::checkPlain($name), SafeMarkup::checkPlain($mission_id), SafeMarkup::checkPlain($description));
+                StrandStorage::add($name, $mission_id, $description);
                 drupal_set_message(t('Strand: ' . $name . ' has been added'));
             } catch(\Exception $e) {
                 drupal_set_message(t("Sorry, that didn't work. Please ensure the strand name entered is unique for the selected mission."), 'error');

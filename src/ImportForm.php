@@ -8,7 +8,7 @@ namespace Drupal\mission;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 
@@ -256,15 +256,15 @@ class ImportForm extends FormBase {
           $mission = $reader->val($row, TOPIC_IMPORT_MISSION + 1, $sheet);
           $strand = $reader->val($row, TOPIC_IMPORT_STRAND + 1, $sheet);
           $unit = $reader->val($row, TOPIC_IMPORT_UNIT + 1, $sheet);
-          $topicname = $reader->val($row, TOPIC_IMPORT_NAME + 1, $sheet);
-          $topicdescription = $reader->val($row, TOPIC_IMPORT_DESCRIPTION + 1, $sheet);
+          $topicname = str_replace("\n", " ", Html::escape($reader->val($row, TOPIC_IMPORT_NAME + 1, $sheet)));
+          $topicdescription = str_replace("\n", " ", Html::escape($reader->val($row, TOPIC_IMPORT_DESCRIPTION + 1, $sheet)));
           $topicType = $reader->val($row, TOPIC_IMPORT_TOPIC_TYPE + 1, $sheet);
           $coreContent = $reader->val($row, TOPIC_IMPORT_CORE_CONTENT + 1, $sheet);
           $difficultyIndex = $reader->val($row, TOPIC_IMPORT_DIFFICULTY_INDEX + 1, $sheet);
-          $externalTopic = $reader->val($row, TOPIC_IMPORT_EXTERNAL_TOPIC + 1, $sheet);
-          $externalUrl = $reader->val($row, TOPIC_IMPORT_EXTERNAL_URL + 1, $sheet);
-          $learningOutcome = $reader->val($row, TOPIC_IMPORT_LEARNING_OUTCOME + 1, $sheet);
-          $notes = $reader->val($row, TOPIC_IMPORT_NOTES + 1, $sheet);
+          $externalTopic = str_replace("\n", " ", Html::escape($reader->val($row, TOPIC_IMPORT_EXTERNAL_TOPIC + 1, $sheet)));
+          $externalUrl = str_replace("\n", " ", Html::escape($reader->val($row, TOPIC_IMPORT_EXTERNAL_URL + 1, $sheet)));
+          $learningOutcome = str_replace("\n", " ", Html::escape($reader->val($row, TOPIC_IMPORT_LEARNING_OUTCOME + 1, $sheet)));
+          $notes = str_replace("\n", " ", Html::escape($reader->val($row, TOPIC_IMPORT_NOTES + 1, $sheet)));
           $term = $reader->val($row, TOPIC_IMPORT_TERM + 1, $sheet);                                                                                
           $weeknumber = $reader->val($row, TOPIC_IMPORT_WEEK_NUMBER + 1, $sheet);
           
@@ -356,10 +356,10 @@ class ImportForm extends FormBase {
         {
            
           if($validateOnly == FALSE)
-            TopicStorage::import($unitid, SafeMarkup::checkPlain($data[TOPIC_IMPORT_NAME]), SafeMarkup::checkPlain($data[TOPIC_IMPORT_DESCRIPTION]), 
-                    $topictypeid, $data[TOPIC_IMPORT_CORE_CONTENT], $data[TOPIC_IMPORT_DIFFICULTY_INDEX] , SafeMarkup::checkPlain($data[TOPIC_IMPORT_EXTERNAL_TOPIC]), 
-                    SafeMarkup::checkPlain($data[TOPIC_IMPORT_EXTERNAL_URL]), SafeMarkup::checkPlain($data[TOPIC_IMPORT_LEARNING_OUTCOME]), 
-                    SafeMarkup::checkPlain($data[TOPIC_IMPORT_NOTES]),  $termid, $data[TOPIC_IMPORT_WEEK_NUMBER]);
+            TopicStorage::import($unitid, $data[TOPIC_IMPORT_NAME], $data[TOPIC_IMPORT_DESCRIPTION], 
+                    $topictypeid, $data[TOPIC_IMPORT_CORE_CONTENT], $data[TOPIC_IMPORT_DIFFICULTY_INDEX] , $data[TOPIC_IMPORT_EXTERNAL_TOPIC], 
+                    $data[TOPIC_IMPORT_EXTERNAL_URL], $data[TOPIC_IMPORT_LEARNING_OUTCOME], 
+                    $data[TOPIC_IMPORT_NOTES],  $termid, $data[TOPIC_IMPORT_WEEK_NUMBER]);
           
         }
     }
