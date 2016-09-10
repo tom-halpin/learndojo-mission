@@ -8,7 +8,7 @@ namespace Drupal\mission;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Core;
 use Drupal\Core\Ajax;
 
@@ -365,17 +365,17 @@ class TopicAddForm extends FormBase {
     function submitForm(array &$form, FormStateInterface $form_state) {
 
         $unit_id = $form_state -> getValue('unit_id');
-        $name = SafeMarkup::checkPlain($form_state -> getValue('name'));
-        $description = SafeMarkup::checkPlain($form_state -> getValue('description'));
-        $learning_outcome = SafeMarkup::checkPlain($form_state -> getValue('learning_outcome'));
+        $name = Html::escape($form_state -> getValue('name'));
+        $description = Html::escape($form_state -> getValue('description'));
+        $learning_outcome = Html::escape($form_state -> getValue('learning_outcome'));
         $corecontent = $form_state -> getValue('corecontent');
-        $ka_topic = SafeMarkup::checkPlain($form_state -> getValue('ka_topic'));
-        $ka_url = SafeMarkup::checkPlain($form_state -> getValue('ka_url'));
+        $ka_topic = Html::escape($form_state -> getValue('ka_topic'));
+        $ka_url = Html::escape($form_state -> getValue('ka_url'));
         $difficultyindex = $form_state -> getValue('difficultyindex');
         $term_id = $form_state -> getValue('term_id');
         $weeknumber = $form_state -> getValue('weeknumber');
         $topictype_id = $form_state -> getValue('topictype_id');
-        $notes = SafeMarkup::checkPlain($form_state -> getValue('notes'));
+        $notes = Html::escape($form_state -> getValue('notes'));
 
         if (!empty($this -> id)) {
             try {
