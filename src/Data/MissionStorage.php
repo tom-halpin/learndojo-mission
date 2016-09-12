@@ -72,13 +72,23 @@ class MissionStorage {
   static function delete($id) {
     db_delete('kamission')->condition('id', $id)->execute();
   }
+
+  static function getIDByCountryMission($country, $mission) {
+    $id = db_query('SELECT kam.id 
+                    FROM kamission kam, kacountry kac
+                    where 
+                     kam.country_id = kac.id and
+                     kac.name = :country and 
+                     kam.name = :mission', array(':country' => trim($country), ':mission' => trim($mission)))->fetchField();
+    return $id;
+  }   
   
-  static function import($data, $countryid){
+  static function import($countryid, $missionname, $missiondescription){
     db_merge('kamission')->key(
-        array('name' => trim($data[1])))->fields(array(
+        array('name' => trim($missionname), 'country_id' => $countryid))->fields(array(
               'country_id' => $countryid,
-              'name' => trim($data[1]),
-              'description' =>  trim($data[2]),
+              'name' => trim($missionname),
+              'description' =>  trim($missiondescription),
             ))->execute();
   }
 }

@@ -101,4 +101,13 @@ class UnitStorage {
                                                 ':strand' => trim($strand), ':unit' => trim($unit)))->fetchField();
     return $id;
   }
+
+  static function import($strandid, $unitname, $unitdescription){
+    db_merge('kaunit')->key(
+        array('name' => trim($unitname), 'strand_id' => $strandid))->fields(array(
+              'strand_id' => $strandid,
+              'name' => trim($unitname),
+              'description' =>  trim($unitdescription),
+            ))->execute();
+  }  
 }

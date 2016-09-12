@@ -224,6 +224,217 @@ class ImportValidator {
     }    
     return !$rowerror;
   }
+
+  static function ValidateUnitRow($data, $rowcount, $numcols, &$rowerror, &$msg, $strandid)
+  {
+    $rowerror = false;
+    $numcols = count($data);
+    
+    if($numcols != UNIT_IMPORT_NUM_COLUMNS)
+    {
+        $msg = t('Invalid number of columns :numcols in file.', array(':numcols' => $numcols));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(ImportValidator::isempty($data[UNIT_IMPORT_COUNTRY]))
+    {
+        $msg = $msg . t('Country must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[UNIT_IMPORT_COUNTRY]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Country name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }  
+    if(ImportValidator::isempty($data[UNIT_IMPORT_MISSION]))
+    {
+        $msg = $msg . t('Mission must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[UNIT_IMPORT_MISSION]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Mission name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    if(ImportValidator::isempty($data[UNIT_IMPORT_STRAND]))
+    {
+        $msg = $msg . t('Strand must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[UNIT_IMPORT_STRAND]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Strand name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    if(ImportValidator::isempty($data[UNIT_IMPORT_NAME]))
+    {
+        $msg = $msg . t('Unit Name must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
+    if(strlen($data[UNIT_IMPORT_NAME]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Unit name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    if(ImportValidator::isempty($data[UNIT_IMPORT_DESCRIPTION]))
+    {
+        $msg = $msg . t('Unit Description must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
+    if(strlen($data[UNIT_IMPORT_DESCRIPTION]) > DESCRIPTION_LENGTH)
+    {
+        $msg = $msg . t('Unit Description cannot be longer than :len. Row :rowcount.', array(':len' => DESCRIPTION_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    //drupal_set_message('Import Validator ID ' . ' ' . $countryid); 
+    if(($strandid >= 1) == FALSE)
+    {
+        $msg = $msg . t('Country ' . $data[UNIT_IMPORT_COUNTRY] . ' ' . 'Mission ' . $data[UNIT_IMPORT_MISSION] . ' ' . 'Strand ' . $data[UNIT_IMPORT_STRAND] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;                
+    }
+    return !$rowerror;
+  }
+
+  static function ValidateStrandRow($data, $rowcount, $numcols, &$rowerror, &$msg, $missionid)
+  {
+    $rowerror = false;
+    $numcols = count($data);
+    
+    if($numcols != STRAND_IMPORT_NUM_COLUMNS)
+    {
+        $msg = t('Invalid number of columns :numcols in file.', array(':numcols' => $numcols));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(ImportValidator::isempty($data[STRAND_IMPORT_COUNTRY]))
+    {
+        $msg = $msg . t('Country must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[STRAND_IMPORT_COUNTRY]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Country name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }  
+    if(ImportValidator::isempty($data[STRAND_IMPORT_MISSION]))
+    {
+        $msg = $msg . t('Mission must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[STRAND_IMPORT_MISSION]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Mission name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    
+    if(ImportValidator::isempty($data[STRAND_IMPORT_NAME]))
+    {
+        $msg = $msg . t('Strand Name must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
+    if(strlen($data[STRAND_IMPORT_NAME]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Strand name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    if(ImportValidator::isempty($data[STRAND_IMPORT_DESCRIPTION]))
+    {
+        $msg = $msg . t('Strand Description must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
+    if(strlen($data[STRAND_IMPORT_DESCRIPTION]) > DESCRIPTION_LENGTH)
+    {
+        $msg = $msg . t('Strand Description cannot be longer than :len. Row :rowcount.', array(':len' => DESCRIPTION_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    //drupal_set_message('Import Validator ID ' . ' ' . $countryid); 
+    if(($missionid >= 1) == FALSE)
+    {
+        $msg = $msg . t('Country ' . $data[STRAND_IMPORT_COUNTRY] . ' ' . 'Mission ' . $data[STRAND_IMPORT_MISSION] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;                
+    }
+    return !$rowerror;
+  }
+
+  static function ValidateMissionRow($data, $rowcount, $numcols, &$rowerror, &$msg, $countryid)
+  {
+    $rowerror = false;
+    $numcols = count($data);
+    
+    //drupal_set_message(t($rowcount . ' ' . $numcols . ' ' . MISSION_IMPORT_NUM_COLUMNS));
+      
+    if($numcols != MISSION_IMPORT_NUM_COLUMNS)
+    {
+        $msg = t('Invalid number of columns :numcols in file.', array(':numcols' => $numcols));
+        $rowerror = true;
+        $errorrow = $rowcount;
+            drupal_set_message(MISSION_IMPORT_NUM_COLUMNS . ' ' . $numcols);
+    }
+    if(ImportValidator::isempty($data[MISSION_IMPORT_COUNTRY]))
+    {
+        $msg = $msg . t('Country must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }
+    if(strlen($data[MISSION_IMPORT_COUNTRY]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Country name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }  
+    if(ImportValidator::isempty($data[MISSION_IMPORT_NAME]))
+    {
+        $msg = $msg . t('Mission Name must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
+    if(strlen($data[MISSION_IMPORT_NAME]) > NAME_LENGTH)
+    {
+        $msg = $msg . t('Mission name cannot be longer than :len. Row :rowcount.', array(':len' => NAME_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    if(ImportValidator::isempty($data[MISSION_IMPORT_DESCRIPTION]))
+    {
+        $msg = $msg . t('Mission Description must be supplied. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    } 
+    if(strlen($data[MISSION_IMPORT_DESCRIPTION]) > DESCRIPTION_LENGTH)
+    {
+        $msg = $msg . t('Mission Description cannot be longer than :len. Row :rowcount.', array(':len' => DESCRIPTION_LENGTH, ':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;
+    }    
+    //drupal_set_message('Import Validator ID ' . ' ' . $countryid); 
+    if(($countryid >= 1) == FALSE)
+    {
+        $msg = $msg . t('Country ' . $data[MISSION_IMPORT_COUNTRY] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
+        $rowerror = true;
+        $errorrow = $rowcount;                
+    }
+    return !$rowerror;
+  }
   
   private static function isempty($var) {
          $var = trim($var);
