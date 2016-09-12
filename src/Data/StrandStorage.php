@@ -80,4 +80,25 @@ class StrandStorage {
   static function delete($id) {
     db_delete('kastrand')->condition('id', $id)->execute();
   }
+  
+  static function getIDByCountryMissionStrand($country, $mission, $strand) {
+    $id = db_query('SELECT kas.id 
+                    FROM kastrand kas, kamission kam, kacountry kac
+                    where 
+                     kas.mission_id = kam.id and
+                     kam.country_id = kac.id and
+                     kac.name = :country and 
+                     kam.name = :mission and
+                     kas.name = :strand', array(':country' => trim($country), ':mission' => trim($mission), ':strand' => trim($strand)))->fetchField();
+    return $id;
+  }  
+  
+  static function import($missionid, $strandname, $stranddescription){
+    db_merge('kastrand')->key(
+        array('name' => trim($strandname), 'mission_id' => $missionid))->fields(array(
+              'mission_id' => $missionid,
+              'name' => trim($strandname),
+              'description' =>  trim($stranddescription),
+            ))->execute();
+  }  
 }

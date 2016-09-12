@@ -6,14 +6,17 @@
 
 namespace Drupal\mission;
 
+session_start();
+
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 
-use Drupal\mission\Data\MissionStorage;
 use Drupal\mission\Data\CountryStorage;
+use Drupal\mission\Data\MissionStorage;
+use Drupal\mission\Data\StrandStorage;
 use Drupal\mission\Data\UnitStorage;
 use Drupal\mission\Data\TopicTypeStorage;
 use Drupal\mission\Data\TermStorage;
@@ -49,35 +52,51 @@ class ImportForm extends FormBase {
 		'#upload_location' => 'public://tmp/',
 	  );
 	  
-    $form['instructions']['templatelinks'] =  array(
+    $form['instructions']['topictemplatelink'] =  array(
           '#type' => 'markup',
-          '#markup' => Link::fromTextAndUrl('Topic Template File (XLS) - Click to Download',  Url::fromUri('base://modules/mission/templates/topictemplate.xls'))->toString()
+          '#markup' => t(Link::fromTextAndUrl('Topic Template File (XLS) - Click to Download',  Url::fromUri('base://modules/mission/templates/topictemplate.xls'))->toString() . '<br/>')
     ); 
-           
-	//$importtypes = array('Mission', 'Strand', 'Unit', 'Topic');
-	$importtypes = array('Topic');
+
+    $form['instructions']['unittemplatelink'] =  array(
+          '#type' => 'markup',
+          '#markup' => t(Link::fromTextAndUrl('Unit Template File (XLS) - Click to Download',  Url::fromUri('base://modules/mission/templates/unittemplate.xls'))->toString() . '<br/>')
+    ); 
+    
+    $form['instructions']['strandtemplatelink'] =  array(
+          '#type' => 'markup',
+          '#markup' => t(Link::fromTextAndUrl('Strand Template File (XLS) - Click to Download',  Url::fromUri('base://modules/mission/templates/strandtemplate.xls'))->toString() . '<br/>')
+    ); 
+    
+    $form['instructions']['missiontemplatelink'] =  array(
+          '#type' => 'markup',
+          '#markup' => t(Link::fromTextAndUrl('Mission Template File (XLS) - Click to Download',  Url::fromUri('base://modules/mission/templates/missiontemplate.xls'))->toString() . '<br/>')
+    ); 
+                       
+	$importtypes = array('Topic', 'Unit', 'Strand', 'Mission');
 	
     $selectedImportType =  key($importtypes);
-    if (isset($formValues['import_type']))
+    if (isset($_SESSION['importtype']))
     {
-       $selectedImportType = $formValues['import_type']   ;
+       $selectedImportType = $_SESSION['importtype']   ;
     } 
          
+    //drupal_set_message(t(isset($formValues['import_type']) . '-' .  $formValues['import_type']));
+      
 	$form['import_type'] = array(
 		'#type' => 'select',
 		'#title' => 'Import Type',
 		'#options' => $importtypes,
 		'#required' => TRUE,
 		'#default_value' => $selectedImportType,
-		'#form_test_required_error' => t('Please select a file to upload.'),
+		//'#form_test_required_error' => t('Please select a file to upload.'),
 	);
   
     $form['skipheader'] = array('#type' => 'checkbox', '#title' => t('Skip Header Row'), '#default_value' => true );
 
     $import = '';
-    if (isset($formValues['import']))
+    if (isset($_SESSION['import'] ))
     {
-       $import = $formValues['import']   ;
+       $import = $_SESSION['import'] ;
     } 
     
     $form['import'] = array(
@@ -135,17 +154,20 @@ class ImportForm extends FormBase {
     drupal_get_messages();    
     // make sure it is a supported import type
     $importtype = $form_state->getValue('import_type');
-    if($importtype != IMPORT_TYPE_TOPIC)
+    if($importtype != IMPORT_TYPE_TOPIC && $importtype != IMPORT_TYPE_UNIT && $importtype != IMPORT_TYPE_STRAND && $importtype != IMPORT_TYPE_MISSION)
     {
         drupal_set_message($importtype . ' ' . t('Import type selected not yet supported.'), 'error');
         return;
     }
+    
+    $_SESSION['importtype'] = $importtype;
     
     $skipheader = $form_state -> getValue('skipheader');
         
     // Check to make sure that the file was uploaded to the server properly
     // Using the fid get the uri of the file loaded from the file_managed table and process it
     $import = $form_state->getValue('import');
+    
     $fid = $import[0];
     $uri = db_query("SELECT uri FROM {file_managed} WHERE fid = :fid", array(':fid' => $fid,))->fetchField();
       
@@ -195,6 +217,7 @@ class ImportForm extends FormBase {
               if($preValidateOnly == TRUE)
               {
                   // only requested a prevalidate and there were no errors detected so display a message indicating same and return
+                      $_SESSION['import'] = $import;
                    drupal_set_message(t('File successfully pre-validated.'));
                    return;
               }
@@ -204,6 +227,7 @@ class ImportForm extends FormBase {
                 $validateOnly = false;
                 if(($errordetected = $this->ProcessXLSFile($importtype, $skipheader, $uri, $validateOnly)) == FALSE)
                 {
+                    $_SESSION['import'] = '';
                     drupal_set_message(t('File successfully imported.'));
                 }
               }
@@ -217,7 +241,7 @@ class ImportForm extends FormBase {
       }
       else {
           drupal_set_message(t('There was an error uploading your file. Please contact a System administrator.'), 'error');
-      }  
+      } 
   }
 
   function ProcessXLSFile($importtype, $skipheader, $uri, $validateOnly)
@@ -271,6 +295,35 @@ class ImportForm extends FormBase {
           $data = array($country, $mission, $strand, $unit, $topicname, $topicdescription, 
                 $topicType, $coreContent, $difficultyIndex, $externalTopic, $externalUrl, $learningOutcome, $notes, $term, $weeknumber);
         }
+        else if($importtype == IMPORT_TYPE_UNIT)
+        {
+          $country = $reader->val($row, UNIT_IMPORT_COUNTRY + 1, $sheet);
+          //drupal_set_message(t('Country.') . ' ' . $country);          
+          $mission = $reader->val($row, UNIT_IMPORT_MISSION + 1, $sheet);
+          $strand = $reader->val($row, UNIT_IMPORT_STRAND + 1, $sheet);
+          $unitname = str_replace("\n", " ", Html::escape($reader->val($row, UNIT_IMPORT_NAME + 1, $sheet)));
+          $unitdescription = str_replace("\n", " ", Html::escape($reader->val($row, UNIT_IMPORT_DESCRIPTION + 1, $sheet)));
+          
+          $data = array($country, $mission, $strand, $unitname, $unitdescription);
+        }
+        else if($importtype == IMPORT_TYPE_STRAND)
+        {
+          $country = $reader->val($row, STRAND_IMPORT_COUNTRY + 1, $sheet);
+          //drupal_set_message(t('Country.') . ' ' . $country);          
+          $mission = $reader->val($row, STRAND_IMPORT_MISSION + 1, $sheet);
+          $strandname = str_replace("\n", " ", Html::escape($reader->val($row, STRAND_IMPORT_NAME + 1, $sheet)));
+          $stranddescription = str_replace("\n", " ", Html::escape($reader->val($row, STRAND_IMPORT_DESCRIPTION + 1, $sheet)));
+          
+          $data = array($country, $mission, $strandname, $stranddescription);
+        }
+        else if($importtype == IMPORT_TYPE_MISSION)
+        {
+          $country = $reader->val($row, MISSION_IMPORT_COUNTRY + 1, $sheet);
+          $missionname = str_replace("\n", " ", Html::escape($reader->val($row, MISSION_IMPORT_NAME + 1, $sheet)));
+          $missiondescription = str_replace("\n", " ", Html::escape($reader->val($row, MISSION_IMPORT_DESCRIPTION + 1, $sheet)));
+          
+          $data = array($country, $missionname, $missiondescription);
+        }                
         $this->ProcessRow($importtype, $data, $row, $numcols, $rowerror, $msg, $validateOnly);
         
         if($errordetected == FALSE && $rowerror == TRUE)
@@ -345,13 +398,11 @@ class ImportForm extends FormBase {
   {
     if($importtype == IMPORT_TYPE_TOPIC)
     {
-        //$countryid = CountryStorage::getIDByName($data[0]);
         $unitid = UnitStorage::getIDByCountryMissionStrandUnit($data[TOPIC_IMPORT_COUNTRY], $data[TOPIC_IMPORT_MISSION], 
                                                                 $data[TOPIC_IMPORT_STRAND], $data[TOPIC_IMPORT_UNIT]);
         $topictypeid = TopicTypeStorage::getIDByName($data[TOPIC_IMPORT_TOPIC_TYPE]);  
         $termid = TermStorage::getIDByName($data[TOPIC_IMPORT_TERM]);
                 
-        //drupal_set_message(t('getIDByCountryMissionStrandUnit .') . ' ' . $data[0] . ' ' . $data[1] . ' ' . $data[2] . ' ' . $data[3] .' ID ' . $unitid);                  
         if(ImportValidator::ValidateTopicRow($data, $rowcount, $numcols, $rowerror, $msg, $unitid, $topictypeid, $termid))
         {
            
@@ -360,6 +411,38 @@ class ImportForm extends FormBase {
                     $topictypeid, $data[TOPIC_IMPORT_CORE_CONTENT], $data[TOPIC_IMPORT_DIFFICULTY_INDEX] , $data[TOPIC_IMPORT_EXTERNAL_TOPIC], 
                     $data[TOPIC_IMPORT_EXTERNAL_URL], $data[TOPIC_IMPORT_LEARNING_OUTCOME], 
                     $data[TOPIC_IMPORT_NOTES],  $termid, $data[TOPIC_IMPORT_WEEK_NUMBER]);
+          
+        }
+    }
+    else if($importtype == IMPORT_TYPE_UNIT)
+    {
+        $strandid = StrandStorage::getIDByCountryMissionStrand($data[UNIT_IMPORT_COUNTRY], $data[UNIT_IMPORT_MISSION], $data[UNIT_IMPORT_STRAND]);
+                
+        if(ImportValidator::ValidateUnitRow($data, $rowcount, $numcols, $rowerror, $msg, $strandid))
+        {
+          if($validateOnly == FALSE)
+            UnitStorage::import($strandid, $data[UNIT_IMPORT_NAME], $data[UNIT_IMPORT_DESCRIPTION]);
+        }
+
+    }
+    else if($importtype == IMPORT_TYPE_STRAND)
+    {
+        $missionid = MissionStorage::getIDByCountryMission($data[STRAND_IMPORT_COUNTRY], $data[STRAND_IMPORT_MISSION]);
+
+        if(ImportValidator::ValidateStrandRow($data, $rowcount, $numcols, $rowerror, $msg, $missionid))
+        {
+          if($validateOnly == FALSE)
+            StrandStorage::import($missionid, $data[STRAND_IMPORT_NAME], $data[STRAND_IMPORT_DESCRIPTION]);
+        }
+    }
+    else if($importtype == IMPORT_TYPE_MISSION)
+    {
+        $countryid = CountryStorage::getIDByName($data[MISSION_IMPORT_COUNTRY]);
+                               
+        if(ImportValidator::ValidateMissionRow($data, $rowcount, $numcols, $rowerror, $msg, $countryid))
+        {
+          if($validateOnly == FALSE)
+            MissionStorage::import($countryid, $data[MISSION_IMPORT_NAME], $data[MISSION_IMPORT_DESCRIPTION]);
           
         }
     }
