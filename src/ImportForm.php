@@ -6,7 +6,8 @@
 
 namespace Drupal\mission;
 
-session_start();
+if(empty(session_id()))
+    session_start();
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -75,9 +76,9 @@ class ImportForm extends FormBase {
 	$importtypes = array('Topic', 'Unit', 'Strand', 'Mission');
 	
     $selectedImportType =  key($importtypes);
-    if (isset($_SESSION['importtype']))
+    if (isset($_SESSION['importform_importtype']))
     {
-       $selectedImportType = $_SESSION['importtype']   ;
+       $selectedImportType = $_SESSION['importform_importtype']   ;
     } 
          
     //drupal_set_message(t(isset($formValues['import_type']) . '-' .  $formValues['import_type']));
@@ -94,9 +95,9 @@ class ImportForm extends FormBase {
     $form['skipheader'] = array('#type' => 'checkbox', '#title' => t('Skip Header Row'), '#default_value' => true );
 
     $import = '';
-    if (isset($_SESSION['import'] ))
+    if (isset($_SESSION['importform_import'] ))
     {
-       $import = $_SESSION['import'] ;
+       $import = $_SESSION['importform_import'] ;
     } 
     
     $form['import'] = array(
@@ -160,7 +161,7 @@ class ImportForm extends FormBase {
         return;
     }
     
-    $_SESSION['importtype'] = $importtype;
+    $_SESSION['importform_importtype'] = $importtype;
     
     $skipheader = $form_state -> getValue('skipheader');
         
@@ -217,7 +218,7 @@ class ImportForm extends FormBase {
               if($preValidateOnly == TRUE)
               {
                   // only requested a prevalidate and there were no errors detected so display a message indicating same and return
-                      $_SESSION['import'] = $import;
+                      $_SESSION['importform_import'] = $import;
                    drupal_set_message(t('File successfully pre-validated.'));
                    return;
               }
@@ -227,7 +228,7 @@ class ImportForm extends FormBase {
                 $validateOnly = false;
                 if(($errordetected = $this->ProcessXLSFile($importtype, $skipheader, $uri, $validateOnly)) == FALSE)
                 {
-                    $_SESSION['import'] = '';
+                    $_SESSION['importform_import'] = '';
                     drupal_set_message(t('File successfully imported.'));
                 }
               }
