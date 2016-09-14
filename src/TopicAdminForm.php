@@ -12,6 +12,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\TopicStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc'; 
 include_once 'global.inc';
 
@@ -25,17 +28,17 @@ class TopicAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
            
-       $country = null;
-       $mission = null;
-       $strand = null;
-       $unit = null;
-       $topic = null;
+       $this -> initFormSessionVariables();
+       $country = $_SESSION['topicadmin_country'];
+       $mission = $_SESSION['topicadmin_mission'];
+       $strand = $_SESSION['topicadmin_strand'];
+       $unit = $_SESSION['topicadmin_unit'];
+       $topic = $_SESSION['topicadmin_topic'];
        
        $formValues = $form_state->getValues();
 
-       $mission = ($form_state->getValue('mission_name') !== null) ? $form_state->getValue('mission_name') :  '';
-       
         $form = array();
+
         $form['filter'] =  array(
           '#type' => 'details',
           '#title' => t('Filter'),
@@ -48,7 +51,7 @@ class TopicAdminForm extends FormBase {
             '#size' => 60,
             '#default_value' => $country,
         );
-                  
+           
         $form['filter']['mission_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Mission Name'),
@@ -56,17 +59,13 @@ class TopicAdminForm extends FormBase {
             '#default_value' => $mission,
         );
 
-       $strand = ($form_state->getValue('strand_name') !== null) ? $form_state->getValue('strand_name') :  '';
-       
-        $form['filter']['strand_name'] = array(
+       $form['filter']['strand_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Strand Name'),
             '#size' => 60,
             '#default_value' => $strand,
         );
 
-       $unit = ($form_state->getValue('unit_name') !== null) ? $form_state->getValue('unit_name') :  '';
-       
         $form['filter']['unit_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Unit Name'),
@@ -74,8 +73,6 @@ class TopicAdminForm extends FormBase {
             '#default_value' => $unit,
         );
             
-       $topic = ($form_state->getValue('topic_name') !== null) ? $form_state->getValue('topic_name') :  '';
-       
         $form['filter']['topic_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Topic Name'),
@@ -121,11 +118,8 @@ class TopicAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       pager_default_initialize(0, $pagesize);
-       $results = TopicStorage::loadGrid($header, $pagesize, $country, $mission, $strand, $unit, $topic);
-
+       $results = TopicStorage::loadGrid($header, GRID_PAGE_SIZE, $country, $mission, $strand, $unit, $topic);
+       
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
         foreach ($results as $row) {
@@ -177,10 +171,62 @@ class TopicAdminForm extends FormBase {
   }
   
   function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild(TRUE);
+
+    # store current values in session variables       
+    $_SESSION['topicadmin_country'] = $form_state->getValue('country_name');;          
+    $_SESSION['topicadmin_mission'] = $form_state->getValue('mission_name');;
+    $_SESSION['topicadmin_strand'] = $form_state->getValue('strand_name');; 
+    $_SESSION['topicadmin_unit'] = $form_state->getValue('unit_name');;
+    $_SESSION['topicadmin_topic'] = $form_state->getValue('topic_name');;       
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['topicadmin_country'] == '' &&          
+        $_SESSION['topicadmin_mission'] == '' && 
+        $_SESSION['topicadmin_strand'] == '' &&  
+        $_SESSION['topicadmin_unit'] == '' && 
+        $_SESSION['topicadmin_topic'] == '' )
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
   
   function resetFilter($form, &$form_state) {
+
+     # reset filters so clear session variables
+     $_SESSION['topicadmin_country'] = '';          
+     $_SESSION['topicadmin_mission'] = '';
+     $_SESSION['topicadmin_strand'] = ''; 
+     $_SESSION['topicadmin_unit'] = '';
+     $_SESSION['topicadmin_topic'] = '';       
      $form_state->setRebuild(FALSE);
-  }  
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
+
+  } 
+
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['topicadmin_country']))
+     {    
+        $_SESSION['topicadmin_country'] = '';
+     }
+     if(!isset($_SESSION['topicadmin_mission']))
+     {          
+         $_SESSION['topicadmin_mission'] = '';
+     }
+     if(!isset($_SESSION['topicadmin_strand']))
+     {         
+         $_SESSION['topicadmin_strand'] = '';
+     }
+     if(!isset($_SESSION['topicadmin_unit']))
+     { 
+         $_SESSION['topicadmin_unit'] = '';
+     }
+     if(!isset($_SESSION['topicadmin_topic']))
+     {
+         $_SESSION['topicadmin_topic'] = '';
+     }
+  } 
 }

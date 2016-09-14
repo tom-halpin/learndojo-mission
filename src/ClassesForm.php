@@ -107,7 +107,6 @@ class ClassesForm extends FormBase {
             
             // create the table
             $form[$countryid][$missionid]['main'][$missionid] = array('#theme' => 'table', 
-                            '#header' => $header, 
                             '#rows' => $missionStrandRows, 
                             '#empty' => t('No strands found!'),
                             '#attributes' => array('id' => 'strand-table', 'class' => 'table-no-striping'));       

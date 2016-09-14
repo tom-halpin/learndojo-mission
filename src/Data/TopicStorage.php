@@ -7,7 +7,7 @@ class TopicStorage {
   static function loadGrid($header, $pagesize, $country, $mission, $strand, $unit, $topic)
   {
         # build the query requesting built in sort and paging support
-        $select = db_select('katopic', 'kat') -> extend('Drupal\Core\Database\Query\PagerSelectExtender') -> extend('Drupal\Core\Database\Query\TableSortExtender');
+        $select = db_select('katopic', 'kat') -> extend('Drupal\Core\Database\Query\TableSortExtender') -> extend('Drupal\Core\Database\Query\PagerSelectExtender') ;
         # get the desired fields
         $select -> fields('kat', 
                         array('id', 'name', 'description', 'corecontent', 'learning_outcome', 'ka_topic', 'ka_url', 'difficultyindex', 'term_id', 'weeknumber', 'topictype_id', 'notes')) 
@@ -117,8 +117,6 @@ class TopicStorage {
   }
   
   static function getAllForUnit($unit_id) {
-    $result = db_query('SELECT s.id, s.mission_id, s.name, s.description, m.name as missionname, m.country_id, c.name as countryname  
-                        FROM kastrand s, kamission m, kacountry c where s.mission_id = m.id and m.country_id = c.id and s.mission_id = :mission_id', array(':mission_id' => $mission_id))->fetchAllAssoc('id');
     $result = db_query('SELECT a.id as missionid, a.name as missionname, 
                 b.id as strandid, b.name as strandname, 
                 c.id as unitid, c.name as unitname, 
