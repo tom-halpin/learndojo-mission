@@ -12,6 +12,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\UnitStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc'; 
 include_once 'global.inc';
 
@@ -25,15 +28,14 @@ class UnitAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
            
-       $country = null;
-       $mission = null;
-       $strand = null;
-       $unit = null;
+       $this -> initFormSessionVariables();
+       $country = $_SESSION['unitadmin_country'];
+       $mission = $_SESSION['unitadmin_mission'];
+       $strand = $_SESSION['unitadmin_strand'];
+       $unit = $_SESSION['unitadmin_unit'];
        
        $formValues = $form_state->getValues();
 
-       $mission = ($form_state->getValue('mission_name') !== null) ? $form_state->getValue('mission_name') :  '';
-       
        $form = array();
         
         $form['filter'] =  array(
@@ -56,8 +58,6 @@ class UnitAdminForm extends FormBase {
             '#default_value' => $mission,
         );
 
-       $strand = ($form_state->getValue('strand_name') !== null) ? $form_state->getValue('strand_name') :  '';
-       
         $form['filter']['strand_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Strand Name'),
@@ -65,8 +65,6 @@ class UnitAdminForm extends FormBase {
             '#default_value' => $strand,
         );
 
-       $unit = ($form_state->getValue('unit_name') !== null) ? $form_state->getValue('unit_name') :  '';
-       
         $form['filter']['unit_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Unit Name'),
@@ -111,10 +109,7 @@ class UnitAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       pager_default_initialize(0, $pagesize);
-       $results = UnitStorage::loadGrid($header, $pagesize, $country, $mission, $strand, $unit);
+       $results = UnitStorage::loadGrid($header, GRID_PAGE_SIZE, $country, $mission, $strand, $unit);
 
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
@@ -166,11 +161,53 @@ class UnitAdminForm extends FormBase {
   }
   
   function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild(TRUE);
+    # store current values in session variables       
+    $_SESSION['unitadmin_country'] = $form_state->getValue('country_name');          
+    $_SESSION['unitadmin_mission'] = $form_state->getValue('mission_name');
+    $_SESSION['unitadmin_strand'] = $form_state->getValue('strand_name'); 
+    $_SESSION['unitadmin_unit'] = $form_state->getValue('unit_name');
+      
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['unitadmin_country'] == '' &&          
+        $_SESSION['unitadmin_mission'] == '' && 
+        $_SESSION['unitadmin_strand'] == '' &&  
+        $_SESSION['unitadmin_unit'] == '' )
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
   
   function resetFilter($form, &$form_state) {
+     # reset filters so clear session variables
+     $_SESSION['unitadmin_country'] = '';          
+     $_SESSION['unitadmin_mission'] = '';
+     $_SESSION['unitadmin_strand'] = ''; 
+     $_SESSION['unitadmin_unit'] = '';   
      $form_state->setRebuild(FALSE);
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
   }
-    
+   
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['unitadmin_country']))
+     {    
+        $_SESSION['unitadmin_country'] = '';
+     }
+     if(!isset($_SESSION['unitadmin_mission']))
+     {          
+         $_SESSION['unitadmin_mission'] = '';
+     }
+     if(!isset($_SESSION['unitadmin_strand']))
+     {         
+         $_SESSION['unitadmin_strand'] = '';
+     }
+     if(!isset($_SESSION['unitadmin_unit']))
+     { 
+         $_SESSION['unitadmin_unit'] = '';
+     }
+  } 
 }

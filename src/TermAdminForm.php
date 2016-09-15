@@ -12,6 +12,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\TermStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc'; 
 include_once 'global.inc';
 
@@ -25,14 +28,15 @@ class TermAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
 
-       $term = null;
+       $this -> initFormSessionVariables();
+       $term = $_SESSION['termadmin_term'];
+              
        $formValues = $form_state->getValues();
-       $term = ($form_state->getValue('term_name') !== null) ? $form_state->getValue('term_name') :  '';
        
         $form['filter'] =  array(
           '#type' => 'details',
           '#title' => t('Filter'),
-          '#open' => FALSE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
+          '#open' => TRUE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
         );
         
         $form['filter']['term_name'] = array(
@@ -76,10 +80,7 @@ class TermAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       pager_default_initialize(0, $pagesize);
-       $results = TermStorage::loadGrid($header, $pagesize, $term);
+       $results = TermStorage::loadGrid($header, GRID_PAGE_SIZE, $term);
 
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
@@ -123,15 +124,32 @@ class TermAdminForm extends FormBase {
         return array($form, $addtext, $table, $pager);
     }
 
-  function validateForm(array &$form, FormStateInterface $form_state) {
-
+  function submitForm(array &$form, FormStateInterface $form_state) {
+    # store current values in session variables       
+    $_SESSION['termadmin_term'] = $form_state->getValue('term_name');          
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['termadmin_term'] == '')
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
   
-  function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild(TRUE);
-  }
-
   function resetFilter($form, &$form_state) {
+     # reset filters so clear session variables
+     $_SESSION['termadmin_term'] = '';          
      $form_state->setRebuild(FALSE);
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
   }
+   
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['termadmin_term']))
+     {    
+        $_SESSION['termadmin_term'] = '';
+     }
+  } 
 }

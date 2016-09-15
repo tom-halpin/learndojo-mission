@@ -12,6 +12,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\StrandStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc'; 
 include_once 'global.inc';
 
@@ -25,14 +28,13 @@ class StrandAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
    
-       $country = null;
-       $mission = null;
-       $strand = null;
+       $this -> initFormSessionVariables();
+       $country = $_SESSION['strandadmin_country'];
+       $mission = $_SESSION['strandadmin_mission'];
+       $strand = $_SESSION['strandadmin_strand'];
+       
        $formValues = $form_state->getValues();
 
-       $country = ($form_state->getValue('country_name') !== null) ? $form_state->getValue('country_name') :  '';
-       $mission = ($form_state->getValue('mission_name') !== null) ? $form_state->getValue('mission_name') :  '';
-       
         $form = array();
         
         $form['filter'] =  array(
@@ -54,9 +56,7 @@ class StrandAdminForm extends FormBase {
             '#size' => 60,
             '#default_value' => $mission,
         );
-
-        $strand = ($form_state->getValue('strand_name') !== null) ? $form_state->getValue('strand_name') :  '';
-       
+      
         $form['filter']['filter'] ['strand_name'] = array(
             '#type' => 'textfield',
             '#title' => t('Strand Name'),
@@ -100,10 +100,7 @@ class StrandAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       pager_default_initialize(0, $pagesize);
-       $results = StrandStorage::loadGrid($header, $pagesize, $country, $mission, $strand);
+       $results = StrandStorage::loadGrid($header, GRID_PAGE_SIZE, $country, $mission, $strand);
 
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
@@ -154,11 +151,45 @@ class StrandAdminForm extends FormBase {
   }
   
   function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild(TRUE);
-  
+    # store current values in session variables       
+    $_SESSION['strandadmin_country'] = $form_state->getValue('country_name');          
+    $_SESSION['strandadmin_mission'] = $form_state->getValue('mission_name');
+    $_SESSION['strandadmin_strand'] = $form_state->getValue('strand_name'); 
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['strandadmin_country'] == '' &&          
+        $_SESSION['strandadmin_mission'] == '' && 
+        $_SESSION['strandadmin_strand'] == '' )
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
-
+  
   function resetFilter($form, &$form_state) {
+     # reset filters so clear session variables
+     $_SESSION['strandadmin_country'] = '';          
+     $_SESSION['strandadmin_mission'] = '';
+     $_SESSION['strandadmin_strand'] = ''; 
      $form_state->setRebuild(FALSE);
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
+  }
+   
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['strandadmin_country']))
+     {    
+        $_SESSION['strandadmin_country'] = '';
+     }
+     if(!isset($_SESSION['strandadmin_mission']))
+     {          
+         $_SESSION['strandadmin_mission'] = '';
+     }
+     if(!isset($_SESSION['strandadmin_strand']))
+     {         
+         $_SESSION['strandadmin_strand'] = '';
+     }
   }  
 }
