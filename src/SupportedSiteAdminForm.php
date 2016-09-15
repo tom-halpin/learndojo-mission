@@ -12,6 +12,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\SupportedSiteStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc'; 
 include_once 'global.inc';
 
@@ -25,15 +28,17 @@ class SupportedSiteAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
       
-       $supportedsite = null;
+
+       $this -> initFormSessionVariables();
+       $supportedsite = $_SESSION['supportedsiteadmin_supportedsite'];
+              
        $formValues = $form_state->getValues();
-       $supportedsite = ($form_state->getValue('supportedsite_name') !== null) ? $form_state->getValue('supportedsite_name') :  '';
        
         $form = array();
         $form['filter'] =  array(
           '#type' => 'details',
           '#title' => t('Filter'),
-          '#open' => FALSE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
+          '#open' => TRUE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
         );
         
         $form['filter']['supportedsite_name'] = array(
@@ -77,11 +82,7 @@ class SupportedSiteAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       //pager_default_initialize($results->total, $pagesize);
-       pager_default_initialize(0, $pagesize);
-       $results = SupportedSiteStorage::loadGrid($header, $pagesize, $supportedsite);
+       $results = SupportedSiteStorage::loadGrid($header, GRID_PAGE_SIZE, $supportedsite);
 
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
@@ -126,17 +127,32 @@ class SupportedSiteAdminForm extends FormBase {
 
     }
 
-
-
-  function validateForm(array &$form, FormStateInterface $form_state) {
-
-  }
-  
   function submitForm(array &$form, FormStateInterface $form_state) {
-       $form_state->setRebuild(TRUE);
+    # store current values in session variables       
+    $_SESSION['supportedsiteadmin_supportedsite'] = $form_state->getValue('supportedsite_name');          
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['supportedsiteadmin_supportedsite'] == '')
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
   
   function resetFilter($form, &$form_state) {
+     # reset filters so clear session variables
+     $_SESSION['supportedsiteadmin_supportedsite'] = '';          
      $form_state->setRebuild(FALSE);
-  }  
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
+  }
+   
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['supportedsiteadmin_supportedsite']))
+     {    
+        $_SESSION['supportedsiteadmin_supportedsite'] = '';
+     }
+  }   
 }

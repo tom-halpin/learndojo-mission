@@ -13,6 +13,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\MissionStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc';
 include_once 'global.inc';
 
@@ -26,11 +29,11 @@ class MissionAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
     
-       $country = null;
-       $mission = null;
+       $this -> initFormSessionVariables();
+       $country = $_SESSION['missionadmin_country'];
+       $mission = $_SESSION['missionadmin_mission'];
+
        $formValues = $form_state->getValues();
-       $country = ($form_state->getValue('country_name') !== null) ? $form_state->getValue('country_name') :  '';
-       $mission = ($form_state->getValue('mission_name') !== null) ? $form_state->getValue('mission_name') :  '';
        
         $form = array();
         $form['filter'] =  array(
@@ -89,10 +92,7 @@ class MissionAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       pager_default_initialize(0, $pagesize);
-       $results = MissionStorage::loadGrid($header, $pagesize, $country, $mission);
+       $results = MissionStorage::loadGrid($header, GRID_PAGE_SIZE, $country, $mission);
 
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
@@ -142,13 +142,39 @@ class MissionAdminForm extends FormBase {
   }
   
   function submitForm(array &$form, FormStateInterface $form_state) {
-    //$form_state->setValue("mission", $form_state->getValue('mission_name'));
-    $form_state->setRebuild(TRUE);
-    
+    # store current values in session variables       
+    $_SESSION['missionadmin_country'] = $form_state->getValue('country_name');          
+    $_SESSION['missionadmin_mission'] = $form_state->getValue('mission_name');
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['missionadmin_country'] == '' &&          
+        $_SESSION['missionadmin_mission'] == '')
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
   
   function resetFilter($form, &$form_state) {
+     # reset filters so clear session variables
+     $_SESSION['missionadmin_country'] = '';          
+     $_SESSION['missionadmin_mission'] = '';
      $form_state->setRebuild(FALSE);
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
   }
+   
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['missionadmin_country']))
+     {    
+        $_SESSION['missionadmin_country'] = '';
+     }
+     if(!isset($_SESSION['missionadmin_mission']))
+     {          
+         $_SESSION['missionadmin_mission'] = '';
+     }
+  } 
   
 }

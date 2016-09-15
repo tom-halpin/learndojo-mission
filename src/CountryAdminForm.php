@@ -12,6 +12,9 @@ use Drupal\Component\Serialization\Json;
 
 use Drupal\mission\Data\CountryStorage;
 
+if(empty(session_id()))
+    session_start();
+
 include_once 'modal.inc'; 
 include_once 'global.inc';
 
@@ -25,14 +28,15 @@ class CountryAdminForm extends FormBase {
 
   function buildForm(array $form, FormStateInterface $form_state) {
 
-       $country = null;
+       $this -> initFormSessionVariables();
+       $country = $_SESSION['countryadmin_country'];
+
        $formValues = $form_state->getValues();
-       $country = ($form_state->getValue('country_name') !== null) ? $form_state->getValue('country_name') :  '';
        
         $form['filter'] =  array(
           '#type' => 'details',
           '#title' => t('Filter'),
-          '#open' => FALSE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
+          '#open' => TRUE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
         );
         
         $form['filter']['country_name'] = array(
@@ -76,10 +80,7 @@ class CountryAdminForm extends FormBase {
             array('data' => 'Delete'), );
 
        # load grid
-       $pagesize = GRID_PAGE_SIZE;
-       #reset the pager before loading the result set
-       pager_default_initialize(0, $pagesize);
-       $results = CountryStorage::loadGrid($header, $pagesize, $country);
+       $results = CountryStorage::loadGrid($header, GRID_PAGE_SIZE, $country);
 
         # configure the table rows, making the first column a link to our 'edit' page and the last column a delete link
         $rows = array();
@@ -128,10 +129,31 @@ class CountryAdminForm extends FormBase {
   }
   
   function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild(TRUE);
+    # store current values in session variables       
+    $_SESSION['countryadmin_country'] = $form_state->getValue('country_name');          
+     
+    //$form_state->setRebuild(TRUE);
+    if( $_SESSION['countryadmin_country'] == '')
+    {
+         #reset the pager before loading the result set
+         pager_default_initialize(0, GRID_PAGE_SIZE);  
+    }
   }
-
+  
   function resetFilter($form, &$form_state) {
+     # reset filters so clear session variables
+     $_SESSION['countryadmin_country'] = '';          
      $form_state->setRebuild(FALSE);
+     #reset the pager before loading the result set
+     pager_default_initialize(0, GRID_PAGE_SIZE);
   }
+   
+  function initFormSessionVariables()
+  {
+     # initialise topic admin form session variables if they haven't already been initialised
+     if(!isset($_SESSION['countryadmin_country']))
+     {    
+        $_SESSION['countryadmin_country'] = '';
+     }
+  } 
 }

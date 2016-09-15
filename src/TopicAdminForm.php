@@ -173,11 +173,11 @@ class TopicAdminForm extends FormBase {
   function submitForm(array &$form, FormStateInterface $form_state) {
 
     # store current values in session variables       
-    $_SESSION['topicadmin_country'] = $form_state->getValue('country_name');;          
-    $_SESSION['topicadmin_mission'] = $form_state->getValue('mission_name');;
-    $_SESSION['topicadmin_strand'] = $form_state->getValue('strand_name');; 
-    $_SESSION['topicadmin_unit'] = $form_state->getValue('unit_name');;
-    $_SESSION['topicadmin_topic'] = $form_state->getValue('topic_name');;       
+    $_SESSION['topicadmin_country'] = $form_state->getValue('country_name');          
+    $_SESSION['topicadmin_mission'] = $form_state->getValue('mission_name');
+    $_SESSION['topicadmin_strand'] = $form_state->getValue('strand_name'); 
+    $_SESSION['topicadmin_unit'] = $form_state->getValue('unit_name');
+    $_SESSION['topicadmin_topic'] = $form_state->getValue('topic_name');       
      
     //$form_state->setRebuild(TRUE);
     if( $_SESSION['topicadmin_country'] == '' &&          
