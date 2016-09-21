@@ -16,7 +16,7 @@ class MissionStorage {
         $select->join("kacountry","kac","ka.country_id = kac.id");  //join country table
         $select -> fields('kac', array('name')) ;
         $select->addField('kac', 'name', 'countryname'); // alias country.name
-        if (isset($mission)) {
+        if (isset($country)) {
           $select->condition('kac.name', '%' . db_like(trim($country)) . '%', 'LIKE');
         }                        
         if (isset($mission)) {

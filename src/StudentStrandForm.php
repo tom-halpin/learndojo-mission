@@ -62,7 +62,7 @@ class StudentStrandForm extends FormBase {
          
          $unitoptions = $this -> getStrandUnits($selectedstrand); 
          
-                 
+         $selectedunit = '';        
          if (isset($formValues['unit_id']))
          {
             $selectedunit = $formValues['unit_id']   ;
