@@ -402,8 +402,8 @@ class ImportForm extends FormBase {
         $unitid = UnitStorage::getIDByCountryMissionStrandUnit($data[TOPIC_IMPORT_COUNTRY], $data[TOPIC_IMPORT_MISSION], 
                                                                 $data[TOPIC_IMPORT_STRAND], $data[TOPIC_IMPORT_UNIT]);
         $topictypeid = TopicTypeStorage::getIDByName($data[TOPIC_IMPORT_TOPIC_TYPE]);  
-        $termid = TermStorage::getIDByName($data[TOPIC_IMPORT_TERM]);
-                
+        $termid = TermStorage::getIDByCountryTermName($data[TOPIC_IMPORT_COUNTRY], $data[TOPIC_IMPORT_TERM]);
+                        
         if(ImportValidator::ValidateTopicRow($data, $rowcount, $numcols, $rowerror, $msg, $unitid, $topictypeid, $termid))
         {
            

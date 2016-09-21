@@ -212,7 +212,7 @@ class ImportValidator {
     }
     if(($termid >= 1) == FALSE)
     {
-        $msg = $msg . t('Term ' . $data[TOPIC_IMPORT_TERM] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
+        $msg = $msg . t('Term ' . $data[TOPIC_IMPORT_TERM] . ' not defined for Country ' . $data[TOPIC_IMPORT_COUNTRY] . '. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;                
     }
@@ -221,7 +221,7 @@ class ImportValidator {
         $msg = $msg . t('Topic Type ' . $data[TOPIC_IMPORT_TOPIC_TYPE] . ' not defined. Row :rowcount.', array(':rowcount' => $rowcount));
         $rowerror = true;
         $errorrow = $rowcount;                
-    }    
+    }
     return !$rowerror;
   }
 

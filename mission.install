@@ -84,11 +84,15 @@ function mission_install() {
         db_query("
             CREATE TABLE katerm(
               id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+              country_id INT UNSIGNED NOT NULL,
               name VARCHAR(255) NOT NULL,
               description VARCHAR(512) NOT NULL,
+              start_date DATE NOT NULL,
+              num_weeks INT UNSIGNED NOT NULL,
               last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               PRIMARY KEY(id),
-              UNIQUE KEY(name)
+              UNIQUE KEY(country_id, name)
+              CONSTRAINT fk_term_country FOREIGN KEY(country_id) REFERENCES kacountry(id) ON DELETE RESTRICT ON UPDATE CASCADE
             ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
         ");
     }
@@ -144,8 +148,8 @@ function mission_install() {
     db_query("INSERT INTO katopictype(name, description) VALUES ('Exercise','Exercise Description')");
     db_query("INSERT INTO katopictype(name, description) VALUES ('Video','Video Description')");
     
-    db_query("INSERT INTO katerm(name, description) VALUES ('Academic Year','Academic Year Description')");
-    db_query("INSERT INTO katerm(name, description) VALUES ('Calendar Year','Calendar Year Description')");
+    db_query("INSERT INTO katerm(name, description) VALUES (1, 'Academic Year', 'Academic Year Description', '2016-01-01', 1)");
+    db_query("INSERT INTO katerm(name, description) VALUES (1, 'Calendar Year','Calendar Year Description', '2016-01-01', 1)");
     
     db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('Khan Academy','khanacademy.org', 'Khan Academy Supported Site Description')");
     db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('PDST','pdst.ie', 'PDST Supported Site Description')");
@@ -174,9 +178,9 @@ function mission_install() {
     db_query("INSERT INTO katopictype(name, description) VALUES ('Exercise','Exercise Description')");
     db_query("INSERT INTO katopictype(name, description) VALUES ('Video','Video Description')");
     
-    db_query("INSERT INTO katerm(name, description) VALUES ('Academic Year','Academic Year Description')");
-    db_query("INSERT INTO katerm(name, description) VALUES ('Calendar Year','Calendar Year Description')");
-    
+    db_query("INSERT INTO katerm(name, description) VALUES (1, 'Academic Year', 'Academic Year Description', '2016-01-01', 1)");
+    db_query("INSERT INTO katerm(name, description) VALUES (1, 'Calendar Year','Calendar Year Description', '2016-01-01', 1)");
+  *     
     db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('Khan Academy','khanacademy.org', 'Khan Academy Supported Site Description')");
     db_query("INSERT INTO kasupportedsite(name, domain, description) VALUES ('PDST','pdst.ie', 'PDST Supported Site Description')");
     

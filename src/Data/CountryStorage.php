@@ -45,6 +45,12 @@ class CountryStorage {
     return $id;
   }
   
+  static function getIDByUnitID($unitid) {
+    $id = db_query('SELECT c.id FROM kacountry c, kamission m, kastrand s, kaunit u 
+                    WHERE c.id = m.country_id and m.id = s.mission_id and s.id = u.strand_id and u.id = :unitid', array(':unitid' => $unitid))->fetchField();
+    return $id;
+  }
+
   static function add($name, $description) {
     db_insert('kacountry')->fields(array(
       'name' => trim($name),
