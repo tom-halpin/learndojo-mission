@@ -412,8 +412,7 @@ class TopicAddForm extends FormBase {
         $term_id = $form_state -> getValue('term_id');
         
         // can sometimes get Ajax errors which prevent the select lists from re-loading so to prevent an incorrect assignment have a hard checks to verify data integrity 
-        $unit_id = 50;
-        $countryid = CountryStorage::getIDByUnitID($unit_id);
+         $countryid = CountryStorage::getIDByUnitID($unit_id);
         if(($countryid >= 1) == FALSE)
         {
             $form_state -> setErrorByName('country_id', 'An error has been detected. The Unit selected is not associated with the Country selected. Please reload the form and try again.');
